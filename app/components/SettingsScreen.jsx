@@ -1,10 +1,37 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import FontSettings from './FontSettings';
-import Summary from './Summary';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const storeData = async (key, value) => {
+  try {
+    await AsyncStorage.setItem(key, value);
+  } catch (e) {
+    // saving error
+  }
+};
+
+const getData = async (key) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return value;
+    } return null;
+  } catch (e) {
+    // error reading value
+    return null;
+  }
+};
 
 export default function SettingsScreen() {
+  const [fontFamily, setFontFamily] = React.useState('helvetica');
+  const [fontSize, setFontSize] = React.useState('medium');
+
+  React.useEffect(() => {
+    getData('font-family').then((value) => setFontFamily(value));
+    getData('font-size').then((value) => setFontSize(value));
+  }, []);
+
   return (
     <View>
       <Text>Text Settings</Text>
@@ -19,12 +46,12 @@ export default function SettingsScreen() {
           { label: 'Dyslexic Friendly', value: 'dyslexic', untouchable: true },
           { label: 'OpenDyslexic', value: 'opendyslexic', parent: 'dyslexic' },
         ]}
-        defaultValue="helvetica"
+        defaultValue={fontFamily}
         containerStyle={{ height: 40 }}
         style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'flex-start' }}
+        itemstyle={{ justifyContent: 'center' }}
         dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => console.log(item)}
+        onChangeItem={(item) => storeData('font-family', item.value)}
       />
 
       <Text>Font Size</Text>
@@ -36,12 +63,12 @@ export default function SettingsScreen() {
           { label: 'x-large', value: 'xlarge' },
           { label: 'xx-large', value: 'xxlarge' },
         ]}
-        defaultValue="medium"
+        defaultValue={fontSize}
         containerStyle={{ height: 40 }}
         style={{ backgroundColor: '#fafafa' }}
         itemstyle={{ justifyContent: 'flex-start' }}
         dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => console.log(item)}
+        onChangeItem={(item) => storeData('font-size', item.value)}
       />
     </View>
 
