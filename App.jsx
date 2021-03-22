@@ -16,10 +16,15 @@ const Stack = createStackNavigator();
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Helvetica': require('./assets/fonts/Helvetica/Helvetica.ttf'),
+    'Helvetica-Bold': require('./assets/fonts/Helvetica/Helvetica-Bold.ttf'),
+    'ComicSans': require('./assets/fonts/Comic Sans/Comic-Sans.ttf'),
+    'ComicSans-Bold': require('./assets/fonts/Comic Sans/Comic-Sans-Bold.ttf'),
+    'Garamond': require('./assets/fonts/Garamond/Garamond.ttf'),
+    'OpenDyslexic': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf'),
+    'OpenDyslexic-Bold': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Bold.otf'),
   });
 
   if (!fontsLoaded) {
-    console.log("Couldn't load font");
     return <AppLoading />;
   }
 

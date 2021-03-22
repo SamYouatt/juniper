@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   main: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'OpenDyslexic',
     fontSize: 64,
   },
 });
