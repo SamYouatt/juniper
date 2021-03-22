@@ -10,6 +10,7 @@ import HomeScreen from './app/components/HomeScreen';
 import SettingsScreen from './app/components/SettingsScreen';
 import TaskScreen from './app/components/TaskScreen';
 import ProfileScreen from './app/components/ProfileScreen';
+import SummaryScreen from './app/components/SummaryScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,8 +18,8 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'Helvetica': require('./assets/fonts/Helvetica/Helvetica.ttf'),
     'Helvetica-Bold': require('./assets/fonts/Helvetica/Helvetica-Bold.ttf'),
-    'ComicSans': require('./assets/fonts/Comic Sans/Comic-Sans.ttf'),
-    'ComicSans-Bold': require('./assets/fonts/Comic Sans/Comic-Sans-Bold.ttf'),
+    'ComicSans': require('./assets/fonts/ComicSans/Comic-Sans.ttf'),
+    'ComicSans-Bold': require('./assets/fonts/ComicSans/Comic-Sans-Bold.ttf'),
     'Garamond': require('./assets/fonts/Garamond/Garamond.ttf'),
     'OpenDyslexic': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf'),
     'OpenDyslexic-Bold': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Bold.otf'),
@@ -30,7 +31,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -51,9 +52,13 @@ export default function App() {
           component={ProfileScreen}
           options={{ title: 'Profile' }}
         />
+        <Stack.Screen
+          name="Summary"
+          component={SummaryScreen}
+          options={{ title: 'Summary' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 

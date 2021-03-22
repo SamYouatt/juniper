@@ -13,15 +13,21 @@ const HomeScreen = ({ navigation }) => (
       }}
     />
     <Button
+      title="Task"
+      onPress={() => {
+        navigation.navigate('Task');
+      }}
+    />
+    <Button
       title="Profile"
       onPress={() => {
         navigation.navigate('Profile');
       }}
     />
     <Button
-      title="Task"
+      title="Summary"
       onPress={() => {
-        navigation.navigate('Task');
+        navigation.navigate('Summary');
       }}
     />
   </View>
