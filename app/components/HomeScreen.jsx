@@ -5,7 +5,7 @@ import {
 
 const HomeScreen = ({ navigation }) => (
   <View>
-    <Text>Home screen</Text>
+    <Text style={styles.main}>Home screen</Text>
     <Button
       title="Settings"
       onPress={() => {
@@ -26,5 +26,18 @@ const HomeScreen = ({ navigation }) => (
     />
   </View>
 );
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  main: {
+    fontFamily: 'Helvetica',
+    fontSize: 64,
+  },
+});
 
 export default HomeScreen;

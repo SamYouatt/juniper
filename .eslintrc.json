@@ -21,6 +21,8 @@
         "no-use-before-define": "off",
         "react/style-prop-object": "warn",
         "no-unused-vars": "warn",
-        "react/prop-types": "warn"
+        "react/prop-types": "warn",
+        "global-require": "warn",
+        "quote-props": "off"
     }
 }

@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 import HomeScreen from './app/components/HomeScreen';
 import SettingsScreen from './app/components/SettingsScreen';
 import TaskScreen from './app/components/TaskScreen';
@@ -12,6 +14,15 @@ import ProfileScreen from './app/components/ProfileScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Helvetica': require('./assets/fonts/Helvetica/Helvetica.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    console.log("Couldn't load font");
+    return <AppLoading />;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
