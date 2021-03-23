@@ -2,38 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
+import shorthash from 'shorthash';
 
 export default function TaskManager() {
-  const [uri, setUri] = useState();
+  const importTask = async () => {
+    // Handle selecting file
+    const file = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false });
+    const name = shorthash.unique(file.name);
+    console.log(file.name);
+    console.log(name);
 
-  const pickDocument = async () => {
-    const result = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false });
-    const newPath = `file://tasks/${result.name}`;
+    // Make task directory if doesn't exist
+    const taskDir = `${FileSystem.documentDirectory}tasks`;
+    const { exists } = await FileSystem.getInfoAsync(taskDir);
 
-    // await FileSystem.copyAsync({ from: result.uri, to: newPath });
+    if (!exists) {
+      await FileSystem.makeDirectoryAsync(taskDir);
+    }
 
-    const options = { encoding: FileSystem.EncodingType.Base64 };
-    // const file = await FileSystem.readAsStringAsync(newPath, options);
+    // Check if already exists in directory
+    const filePath = `${taskDir}/${name}`;
+    const fileCheck = await FileSystem.getInfoAsync(filePath);
 
-    const test = await FileSystem.readDirectoryAsync('file://');
+    if (fileCheck.exists) {
+      console.log('file already exists');
+    } else {
+      const options = { from: file.uri, to: filePath };
+      await FileSystem.copyAsync(options);
+    }
 
-    setUri(result.uri);
-    console.log(result);
-    console.log(newPath);
-    // console.log(file);
-    console.log(test);
-  };
+    const contents = await FileSystem.readDirectoryAsync(taskDir);
+    console.log(contents);
 
-  const readFile = async (filepath) => {
-    const options = { encoding: FileSystem.EncodingType.Base64 };
-    const file = await FileSystem.readAsStringAsync(filepath, options);
-    console.log(file);
+    // try reading it for testing purposes
+    // const fileContents = await FileSystem.readAsStringAsync(filePath);
+    // const task = JSON.parse(fileContents);
+    // console.log(task.word);
   };
 
   return (
     <View>
       <Text>Task Manager</Text>
-      <Button title="Select Document" onPress={pickDocument} />
+      <Button title="Select Document" onPress={importTask} />
     </View>
   );
 }

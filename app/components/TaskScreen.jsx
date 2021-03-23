@@ -7,8 +7,6 @@ export default function TaskScreen() {
   return (
     <View>
       <Text>Task</Text>
-
-      <Text>{uri}</Text>
     </View>
   );
 }
