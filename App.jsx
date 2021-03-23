@@ -11,6 +11,7 @@ import SettingsScreen from './app/components/SettingsScreen';
 import TaskScreen from './app/components/TaskScreen';
 import ProfileScreen from './app/components/ProfileScreen';
 import SummaryScreen from './app/components/SummaryScreen';
+import TaskManager from './app/components/TaskManager';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,11 @@ export default function App() {
           name="Summary"
           component={SummaryScreen}
           options={{ title: 'Summary' }}
+        />
+        <Stack.Screen
+          name="TaskManager"
+          component={TaskManager}
+          options={{ title: 'Task Manager' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

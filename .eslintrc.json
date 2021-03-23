@@ -23,6 +23,7 @@
         "no-unused-vars": "warn",
         "react/prop-types": "warn",
         "global-require": "warn",
-        "quote-props": "off"
+        "quote-props": "off",
+        "max-len": "warn"
     }
 }
