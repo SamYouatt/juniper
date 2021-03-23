@@ -3,16 +3,14 @@ import { View, Text, Button } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import shorthash from 'shorthash';
+import Validator from 'jsonschema';
+import schema from '../../helpers/schema/TaskSchema';
 
 export default function TaskManager() {
   const importTask = async () => {
-    // Handle selecting file
     const file = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false });
     const name = shorthash.unique(file.name);
-    console.log(file.name);
-    console.log(name);
 
-    // Make task directory if doesn't exist
     const taskDir = `${FileSystem.documentDirectory}tasks`;
     const { exists } = await FileSystem.getInfoAsync(taskDir);
 
@@ -20,7 +18,6 @@ export default function TaskManager() {
       await FileSystem.makeDirectoryAsync(taskDir);
     }
 
-    // Check if already exists in directory
     const filePath = `${taskDir}/${name}`;
     const fileCheck = await FileSystem.getInfoAsync(filePath);
 
@@ -30,14 +27,12 @@ export default function TaskManager() {
       const options = { from: file.uri, to: filePath };
       await FileSystem.copyAsync(options);
     }
+  };
 
-    const contents = await FileSystem.readDirectoryAsync(taskDir);
-    console.log(contents);
+  const validateFile = (contents) => {
+    const v = new Validator();
 
-    // try reading it for testing purposes
-    // const fileContents = await FileSystem.readAsStringAsync(filePath);
-    // const task = JSON.parse(fileContents);
-    // console.log(task.word);
+    return v.validate(contents, schema).valid;
   };
 
   return (
@@ -47,3 +42,8 @@ export default function TaskManager() {
     </View>
   );
 }
+
+// try reading it for testing purposes
+// const fileContents = await FileSystem.readAsStringAsync(filePath);
+// const task = JSON.parse(fileContents);
+// console.log(task.word);
