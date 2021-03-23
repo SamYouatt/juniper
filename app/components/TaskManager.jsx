@@ -32,7 +32,8 @@ export default function TaskManager() {
   const validateFile = (contents) => {
     const v = new Validator();
 
-    return v.validate(contents, schema).valid;
+    console.log(v.validate(contents, schema).valid);
+    return null;
   };
 
   return (

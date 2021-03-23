@@ -12,21 +12,27 @@ const schema = {
     'completed': { 'type': 'boolean' },
     'questions': {
       'type': 'array',
-      'properties': {
-        'number': { 'type': 'integer' },
-        'question-text': { 'type': 'string' },
-        'image': {
-          ' type': 'string',
-          'required': false,
-        },
-        'answers': {
-          'type': 'array',
-          'properites': {
-            'text': { 'type': 'string' },
-            'correct': { 'type': 'boolean' },
-            'image': {
-              'type': 'string',
-              'required': false,
+      'items': {
+        'type': 'object',
+        'properties': {
+          'number': { 'type': 'integer' },
+          'question-text': { 'type': 'string' },
+          'image': {
+            ' type': 'string',
+            'required': false,
+          },
+          'answers': {
+            'type': 'array',
+            'items': {
+              'type': 'object',
+              'properites': {
+                'text': { 'type': 'string' },
+                'correct': { 'type': 'boolean' },
+                'image': {
+                  'type': 'string',
+                  'required': false,
+                },
+              },
             },
           },
         },
