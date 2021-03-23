@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
 
-const TaskScreen = () => (
-  <View>
-    <Text>Task</Text>
-  </View>
-);
+export default function TaskScreen() {
+  const pickDocument = async () => {
+    const result = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false });
+    console.log(result);
+  };
 
-export default TaskScreen;
+  return (
+    <View>
+      <Text>Task</Text>
+      <Button title="Select Document" onPress={pickDocument} />
+    </View>
+  );
+}
