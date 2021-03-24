@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
+import {
+  View, Text, Button, Alert,
+} from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import shorthash from 'shorthash';
@@ -9,23 +11,26 @@ import schema from '../../helpers/schema/TaskSchema';
 export default function TaskManager() {
   const importTask = async () => {
     // get file selected from picker and has name
-    const file = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false, type: 'application/json' });
+    const file = await DocumentPicker.getDocumentAsync({
+      copyToCacheDirectory: false,
+      type: 'application/json',
+    });
     const name = shorthash.unique(file.name);
 
     // make internal tasks directory if not present
     const taskDir = `${FileSystem.documentDirectory}tasks`;
-    const { exists } = await FileSystem.getInfoAsync(taskDir);
+    const dirExists = await FileSystem.getInfoAsync(taskDir);
 
-    if (!exists) {
+    if (!dirExists) {
       await FileSystem.makeDirectoryAsync(taskDir);
     }
 
     // copy file to internal if doesn't already exist
     const filePath = `${taskDir}/${name}`;
-    const fileCheck = await FileSystem.getInfoAsync(filePath);
+    const alreadyExists = await FileSystem.getInfoAsync(filePath);
 
-    if (fileCheck.exists) {
-      console.log('file already exists');
+    if (alreadyExists.exists) {
+      Alert.alert(null, 'File already imported');
     } else {
       const options = { from: file.uri, to: filePath };
       await FileSystem.copyAsync(options);
@@ -33,7 +38,7 @@ export default function TaskManager() {
       // delete invalid file formats
       const validFile = await validateFile(filePath);
       if (!validFile) {
-        console.log('not valid format');
+        Alert.alert(null, 'Invalid file format');
         await FileSystem.deleteAsync(filePath, { idempotent: true });
       }
     }
@@ -43,10 +48,8 @@ export default function TaskManager() {
     const v = new Validator();
     const file = await FileSystem.readAsStringAsync(path);
     const fileContents = JSON.parse(file);
-    console.log(fileContents);
 
     const isValid = v.validate(fileContents, schema).valid;
-    console.log(isValid);
 
     return isValid;
   };
@@ -70,8 +73,3 @@ export default function TaskManager() {
     </View>
   );
 }
-
-// try reading it for testing purposes
-// const fileContents = await FileSystem.readAsStringAsync(filePath);
-// const task = JSON.parse(fileContents);
-// console.log(task.word);
