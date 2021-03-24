@@ -14,7 +14,7 @@ export default function TaskManager() {
 
   useEffect(() => {
     showDirectory();
-  }, []);
+  }, [taskList]);
 
   const importTask = async () => {
     // get file selected from picker and has name
