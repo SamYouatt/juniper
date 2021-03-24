@@ -8,6 +8,7 @@ export default function TaskWidgetEditable({ fileName }) {
   const [task, setTask] = useState(null);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [timePickerVisible, setTimePickerVisible] = useState(false);
+  const [date, setDate] = useState();
   const filePath = `${FileSystem.documentDirectory}tasks/${fileName}`;
 
   useEffect(() => {
@@ -44,15 +45,21 @@ export default function TaskWidgetEditable({ fileName }) {
     setTimePickerVisible(false);
   };
 
-  const handleDateConfirm = async (date) => {
-    console.log(date);
+  const handleDateConfirm = async (value) => {
+    setDate(value);
     hideDatePicker();
     showTimePicker();
   };
 
-  const handleTimeConfirm = async (time) => {
-    console.log(time);
+  const handleTimeConfirm = async (dateTime) => {
+    console.log(dateTime);
     hideTimePicker();
+
+    task.scheduled = dateTime;
+    const stringTask = JSON.stringify(task);
+    await FileSystem.writeAsStringAsync(filePath, stringTask);
+
+    // update this value in the task then write the task back to it
   };
 
   return (
@@ -67,6 +74,11 @@ export default function TaskWidgetEditable({ fileName }) {
               {' '}
               {task.questions.length}
             </Text>
+            <Text>
+              Scheduled:
+              {' '}
+              {task.scheduled ?? 'Not scheduled'}
+            </Text>
             <Button title="Delete" onPress={deleteFile} />
             <Button title="Reschedule" onPress={showDatePicker} />
             <DateTimePickerModal
@@ -80,6 +92,7 @@ export default function TaskWidgetEditable({ fileName }) {
               mode="time"
               onConfirm={handleTimeConfirm}
               onCancel={hideTimePicker}
+              date={date}
             />
           </>
         )
