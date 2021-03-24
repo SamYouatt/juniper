@@ -1,24 +1,27 @@
 const schema = {
   'id': '/TaskSchema',
   'type': 'object',
+  'required': true,
   'properties': {
-    'name': { 'type': 'string' },
-    'image': { 'type': 'string' },
-    'time': { 'type': 'integer' },
+    'name': { 'type': 'string', 'required': true },
+    'image': { 'type': 'string', 'required': true },
+    'time': { 'type': 'integer', 'required': true },
     'scheduled': {
-      'type': 'date',
+      'type': ['date', 'null'],
       'required': false,
     },
-    'completed': { 'type': 'boolean' },
+    'completed': { 'type': 'boolean', 'required': true },
     'questions': {
       'type': 'array',
+      'required': true,
+      'minItems': 1,
       'items': {
         'type': 'object',
         'properties': {
           'number': { 'type': 'integer' },
           'question-text': { 'type': 'string' },
           'image': {
-            ' type': 'string',
+            ' type': ['string', 'null'],
             'required': false,
           },
           'answers': {
@@ -29,7 +32,7 @@ const schema = {
                 'text': { 'type': 'string' },
                 'correct': { 'type': 'boolean' },
                 'image': {
-                  'type': 'string',
+                  'type': ['string', 'null'],
                   'required': false,
                 },
               },
