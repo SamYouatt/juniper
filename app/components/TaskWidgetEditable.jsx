@@ -52,19 +52,14 @@ export default function TaskWidgetEditable({ fileName }) {
   };
 
   const handleTimeConfirm = async (dateTime) => {
-    console.log(dateTime);
     hideTimePicker();
-
     task.scheduled = dateTime;
     const stringTask = JSON.stringify(task);
     await FileSystem.writeAsStringAsync(filePath, stringTask);
-
-    // update this value in the task then write the task back to it
   };
 
   return (
     <View>
-      <Text>WIDGET</Text>
       {task
         ? (
           <>
@@ -86,6 +81,7 @@ export default function TaskWidgetEditable({ fileName }) {
               mode="date"
               onConfirm={handleDateConfirm}
               onCancel={hideDatePicker}
+              minimumDate={new Date(Date.now())}
             />
             <DateTimePickerModal
               isVisible={timePickerVisible}
