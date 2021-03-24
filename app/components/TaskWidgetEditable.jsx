@@ -4,7 +4,7 @@ import * as FileSystem from 'expo-file-system';
 import { View, Text, Button } from 'react-native';
 
 export default function TaskWidgetEditable({ fileName }) {
-  const [task, setTask] = useState([]);
+  const [task, setTask] = useState(null);
   const filePath = `${FileSystem.documentDirectory}tasks/${fileName}`;
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function TaskWidgetEditable({ fileName }) {
       const json = JSON.parse(fileContents);
       setTask(json);
     } catch {
-      setTask([]);
+      setTask(null);
     }
   };
 
@@ -28,8 +28,18 @@ export default function TaskWidgetEditable({ fileName }) {
   return (
     <View>
       <Text>WIDGET</Text>
-      <Text>{task.name}</Text>
-      <Button title="Delete" onPress={() => deleteFile()} />
+      {task && (
+        <>
+          <Text>{task.name}</Text>
+          <Text>
+            Questions:
+            {' '}
+            {task.questions.length}
+          </Text>
+          <Button title="Delete" onPress={deleteFile} />
+        </>
+      )}
+
     </View>
   );
 }
