@@ -4,6 +4,7 @@
     "time": 10,
     "scheduled": null,
     "completed": false,
+    "score": 0,
     "questions": [
         {
             "number": 1,

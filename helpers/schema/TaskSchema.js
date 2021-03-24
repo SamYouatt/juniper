@@ -11,6 +11,7 @@ const schema = {
       'required': false,
     },
     'completed': { 'type': 'boolean', 'required': true },
+    'score': { 'type': 'integer', 'required': true },
     'questions': {
       'type': 'array',
       'required': true,
