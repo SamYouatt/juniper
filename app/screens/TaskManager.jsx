@@ -72,17 +72,10 @@ export default function TaskManager() {
     }
   };
 
-  const clearTasks = async () => {
-    await FileSystem.deleteAsync(`${FileSystem.documentDirectory}tasks`);
-  };
-
   return (
     <View>
       <Text>Task Manager</Text>
       <Button title="Select Document" onPress={importTask} />
-      <Button title="Test button" onPress={() => validateFile('e')} />
-      <Button title="Show tasks directory" onPress={() => showDirectory()} />
-      <Button title="Clear tasks directory" onPress={() => clearTasks()} />
       {taskList.length > 0
         ? taskList.map((fileName) => (
           <TaskWidgetEditable fileName={fileName} key={fileName} />
