@@ -7,21 +7,30 @@ import * as FileSystem from 'expo-file-system';
 import shorthash from 'shorthash';
 import { Validator } from 'jsonschema';
 import schema from '../../helpers/schema/TaskSchema';
+import TaskWidgetEditable from './TaskWidgetEditable';
 
 export default function TaskManager() {
+  const [taskList, setTaskList] = useState([]);
+
+  useEffect(() => {
+    showDirectory();
+  }, []);
+
   const importTask = async () => {
     // get file selected from picker and has name
     const file = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,
       type: 'application/json',
     });
+    if (file.type !== 'success') {
+      return;
+    }
     const name = shorthash.unique(file.name);
-
     // make internal tasks directory if not present
     const taskDir = `${FileSystem.documentDirectory}tasks`;
     const dirExists = await FileSystem.getInfoAsync(taskDir);
 
-    if (!dirExists) {
+    if (!dirExists.exists) {
       await FileSystem.makeDirectoryAsync(taskDir);
     }
 
@@ -55,8 +64,12 @@ export default function TaskManager() {
   };
 
   const showDirectory = async () => {
-    const contents = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
-    console.log(contents);
+    try {
+      const contents = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
+      setTaskList(contents);
+    } catch {
+      setTaskList([]);
+    }
   };
 
   const clearTasks = async () => {
@@ -70,6 +83,11 @@ export default function TaskManager() {
       <Button title="Test button" onPress={() => validateFile('e')} />
       <Button title="Show tasks directory" onPress={() => showDirectory()} />
       <Button title="Clear tasks directory" onPress={() => clearTasks()} />
+      {taskList.length > 0
+        ? taskList.map((fileName) => (
+          <TaskWidgetEditable fileName={fileName} key={fileName} />
+        ))
+        : <Text>Start importing tasks to see something here!</Text>}
     </View>
   );
 }
