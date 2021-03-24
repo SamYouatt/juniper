@@ -9,7 +9,7 @@ import schema from '../../helpers/schema/TaskSchema';
 export default function TaskManager() {
   const importTask = async () => {
     // get file selected from picker and has name
-    const file = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false });
+    const file = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false, type: 'application/json' });
     const name = shorthash.unique(file.name);
 
     // make internal tasks directory if not present
