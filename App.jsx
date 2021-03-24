@@ -6,12 +6,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import HomeScreen from './app/components/HomeScreen';
-import SettingsScreen from './app/components/SettingsScreen';
-import TaskScreen from './app/components/TaskScreen';
-import ProfileScreen from './app/components/ProfileScreen';
-import SummaryScreen from './app/components/SummaryScreen';
-import TaskManager from './app/components/TaskManager';
+import HomeScreen from './app/screens/HomeScreen';
+import SettingsScreen from './app/screens/SettingsScreen';
+import TaskScreen from './app/screens/TaskScreen';
+import ProfileScreen from './app/screens/ProfileScreen';
+import SummaryScreen from './app/screens/SummaryScreen';
+import TaskManager from './app/screens/TaskManager';
 
 const Stack = createStackNavigator();
 

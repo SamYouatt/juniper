@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import shorthash from 'shorthash';
 import { Validator } from 'jsonschema';
 import schema from '../../helpers/schema/TaskSchema';
-import TaskWidgetEditable from './TaskWidgetEditable';
+import TaskWidgetEditable from '../components/TaskWidgetEditable';
 
 export default function TaskManager() {
   const [taskList, setTaskList] = useState([]);
