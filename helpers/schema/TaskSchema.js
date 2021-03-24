@@ -29,7 +29,7 @@ const schema = {
             'items': {
               'type': 'object',
               'properites': {
-                'text': { 'type': 'string' },
+                'text': { 'type': 'string', 'required': false },
                 'correct': { 'type': 'boolean' },
                 'image': {
                   'type': ['string', 'null'],
