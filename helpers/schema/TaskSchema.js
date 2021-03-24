@@ -26,6 +26,8 @@ const schema = {
           },
           'answers': {
             'type': 'array',
+            'minItems': 2,
+            'maxItems': 4,
             'items': {
               'type': 'object',
               'properites': {
