@@ -13,7 +13,7 @@ export default function TaskWidget({ fileName, navigation }) {
   }, [task]);
 
   const loadTask = () => {
-    navigation.navigate('Question', { task });
+    navigation.navigate('Question', { task, fileName });
   };
 
   const readFile = async () => {
