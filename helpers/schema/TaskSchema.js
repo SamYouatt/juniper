@@ -20,7 +20,7 @@ const schema = {
         'type': 'object',
         'properties': {
           'number': { 'type': 'integer' },
-          'question-text': { 'type': 'string' },
+          'questionText': { 'type': 'string' },
           'image': {
             ' type': ['string', 'null'],
             'required': false,

@@ -8,7 +8,7 @@
     "questions": [
         {
             "number": 1,
-            "question-text": "What colour is the sky?",
+            "questionText": "What colour is the sky?",
             "image": "sky",
             "answers": [
                 {
@@ -35,7 +35,7 @@
         },
         {
             "number": 2,
-            "question-text": "What colour are clouds?",
+            "questionText": "What colour are clouds?",
             "image": "clouds",
             "answers": [
                 {
