@@ -30,6 +30,12 @@ const HomeScreen = ({ navigation }) => (
         navigation.navigate('Summary');
       }}
     />
+    <Button
+      title="Manage Tasks"
+      onPress={() => {
+        navigation.navigate('TaskManager');
+      }}
+    />
   </View>
 );
 

@@ -1,0 +1,81 @@
+{
+    "name": "This second task is not as good as the first!",
+    "image": "fruit",
+    "time": 10,
+    "scheduled": null,
+    "completed": false,
+    "score": 0,
+    "questions": [
+        {
+            "number": 1,
+            "question-text": "Which fruit is the banana?",
+            "image": null,
+            "answers": [
+                {
+                    "text": null,
+                    "correct": true,
+                    "image": "banana"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "apple"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "grape"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "pear"
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "question-text": "____ may I have a banana? What word is missing?",
+            "image": null,
+            "answers": [
+                {
+                    "text": "Thank you",
+                    "correct": false,
+                    "image": "thank-you"
+                },
+                {
+                    "text": "Need",
+                    "correct": false,
+                    "image": "need"
+                },
+                {
+                    "text": "Please",
+                    "correct": true,
+                    "image": "please"
+                },
+                {
+                    "text": "Yes",
+                    "correct": false,
+                    "image": "yes"
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "question-text": "You have been given the banana. What do you say now?",
+            "image": null,
+            "answers": [
+                {
+                    "text": "Please",
+                    "correct": false,
+                    "image": "please"
+                },
+                {
+                    "text": "Thank you",
+                    "correct": true,
+                    "image": "thank-you"
+                }
+            ]
+        }
+    ]
+}
