@@ -64,6 +64,14 @@ export default function TaskWidgetEditable({ fileName }) {
     await FileSystem.writeAsStringAsync(filePath, stringTask);
   };
 
+  const resetTask = async () => {
+    task.completed = false;
+    task.dateCompleted = null;
+    task.score = 0;
+    const stringTask = JSON.stringify(task);
+    await FileSystem.writeAsStringAsync(filePath, stringTask);
+  };
+
   return (
     <View>
       {task
@@ -95,6 +103,7 @@ export default function TaskWidgetEditable({ fileName }) {
             <Button title="Delete" onPress={deleteFile} />
             <Button title={task.scheduled ? 'Reschedule' : 'Schedule'} onPress={showDatePicker} />
             {task.scheduled && <Button title="Unschedule" onPress={unschedule} />}
+            {task.completd && <Button title="Reset" onPress={resetTask} />}
             <DateTimePickerModal
               isVisible={datePickerVisible}
               mode="date"
