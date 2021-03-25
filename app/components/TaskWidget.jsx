@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 
-export default function TaskWidget({ fileName }) {
+export default function TaskWidget({ fileName, navigation }) {
   const [task, setTask] = useState(null);
   const filePath = `${FileSystem.documentDirectory}tasks/${fileName}`;
 
@@ -13,8 +13,7 @@ export default function TaskWidget({ fileName }) {
   }, [task]);
 
   const loadTask = () => {
-    console.log('touched!');
-    Alert.alert(null, 'pressed button');
+    navigation.navigate('Question', { task });
   };
 
   const readFile = async () => {
@@ -37,10 +36,10 @@ export default function TaskWidget({ fileName }) {
         {task
           ? (
             <View style={{
-              marginBottom: 30,
               width: 260,
               alignItems: 'center',
               backgroundColor: '#fafafa',
+              borderRadius: 5,
             }}
             >
               <Text>{task.name}</Text>
@@ -53,6 +52,7 @@ export default function TaskWidget({ fileName }) {
           )
           : <Text>Loading...</Text>}
       </TouchableHighlight>
+
     </View>
   );
 }
