@@ -11,6 +11,7 @@ const schema = {
       'required': false,
     },
     'completed': { 'type': 'boolean', 'required': true },
+    'dateCompleted': { 'type': ['date', 'null'], 'required': false },
     'score': { 'type': 'integer', 'required': true },
     'questions': {
       'type': 'array',
