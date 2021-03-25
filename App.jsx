@@ -45,11 +45,6 @@ export default function App() {
           options={{ title: 'Settings' }}
         />
         <Stack.Screen
-          name="Task"
-          component={TaskScreen}
-          options={{ title: 'Task' }}
-        />
-        <Stack.Screen
           name="Profile"
           component={ProfileScreen}
           options={{ title: 'Profile' }}

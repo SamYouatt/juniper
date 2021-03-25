@@ -31,12 +31,6 @@ export default function HomeScreen({ navigation }) {
         }}
       />
       <Button
-        title="Task"
-        onPress={() => {
-          navigation.navigate('Task');
-        }}
-      />
-      <Button
         title="Profile"
         onPress={() => {
           navigation.navigate('Profile');

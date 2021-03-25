@@ -73,8 +73,8 @@ export default function Question({ route, navigation }) {
       {questions[current].answers.map((answer) => (
         {
           ...answer.correct
-            ? <Button title={answer.text} onPress={rightAnswer} key={answer.text} />
-            : <Button title={answer.text} onPress={wrongAnswer} key={answer.text} />,
+            ? <Button title={answer.text ?? ''} onPress={rightAnswer} key={answer.text ?? answer.image} />
+            : <Button title={answer.text ?? ''} onPress={wrongAnswer} key={answer.text ?? answer.image} />,
         }))}
     </View>
   );
