@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function TaskWidgetSummary() {
+export default function TaskWidgetSummary({ task }) {
   return (
     <View>
-      <Text>Completed task here</Text>
+      <Text>{task.name}</Text>
     </View>
   );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Summary({ task }) {
+export default function Summary({ tasks }) {
   return (
     <View>
-      <Text>{task.name}</Text>
+      <Text>Will display summar here</Text>
     </View>
   );
 }

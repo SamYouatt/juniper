@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 
 import { View, Text, Button } from 'react-native';
+import TaskWidgetSummary from '../components/TaskWidgetSummary';
 import Summary from '../components/Summary';
 
 export default function SummaryScreen() {
@@ -32,10 +33,10 @@ export default function SummaryScreen() {
 
   return (
     <View>
-      <Text>Summary page here</Text>
-      <Button title="Test" onPress={() => console.log(completedTasks)} />
+      {completedTasks.length < 1 && <Text>No tasks completed so far</Text>}
+      {completedTasks.length > 0 && <Summary tasks={completedTasks} />}
       {completedTasks.length > 0 && completedTasks.map((task) => (
-        <Summary task={task} key={task.name} />
+        <TaskWidgetSummary task={task} key={task.name} />
       ))}
     </View>
   );
