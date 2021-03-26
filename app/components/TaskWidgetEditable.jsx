@@ -103,7 +103,7 @@ export default function TaskWidgetEditable({ fileName }) {
             <Button title="Delete" onPress={deleteFile} />
             <Button title={task.scheduled ? 'Reschedule' : 'Schedule'} onPress={showDatePicker} />
             {task.scheduled && <Button title="Unschedule" onPress={unschedule} />}
-            {task.completd && <Button title="Reset" onPress={resetTask} />}
+            {task.completed && <Button title="Reset" onPress={resetTask} />}
             <DateTimePickerModal
               isVisible={datePickerVisible}
               mode="date"
