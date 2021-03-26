@@ -9,12 +9,7 @@ export default function Summary({ tasks }) {
 
   useEffect(() => {
     tasks.map((task) => putInLists(task));
-    calculateScores();
   }, []);
-
-  const createSummaries = () => {
-    tasks.map((task) => putInLists(task));
-  };
 
   const daysBetween = (date1, date2) => {
     const d1 = new Date(date1);
@@ -37,29 +32,32 @@ export default function Summary({ tasks }) {
     }
   };
 
-  const calculateScores = () => {
-
-  };
-
   return (
     <View>
-      <Text>Will display summar here</Text>
-      <Button title="Test" onPress={createSummaries} />
-      <Text>
-        Tasks completed today:
-        {' '}
-        {dayList.length}
-      </Text>
-      <Text>
-        Tasks completed this week:
-        {' '}
-        {weekList.length}
-      </Text>
-      <Text>
-        Tasks completed this month:
-        {' '}
-        {monthList.length}
-      </Text>
+      {dayList.length > 0 ? (
+        <Text>
+          Tasks completed today:
+          {' '}
+          {dayList.length}
+        </Text>
+      )
+        : <Text>No tasks completed today</Text>}
+      {weekList.length > 0 ? (
+        <Text>
+          Tasks completed this week:
+          {' '}
+          {weekList.length}
+        </Text>
+      )
+        : <Text>No tasks completed this week</Text>}
+      {dayList.length > 0 ? (
+        <Text>
+          Tasks completed this month:
+          {' '}
+          {dayList.length}
+        </Text>
+      )
+        : <Text>No tasks completed this month</Text>}
     </View>
   );
 }
