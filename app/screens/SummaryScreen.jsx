@@ -16,19 +16,29 @@ export default function SummaryScreen() {
   const getAllCompleted = async () => {
     try {
       const tasksFolder = await FileSystem.readDirectoryAsync(tasksDir);
-      tasksFolder.map((taskName) => checkIfComplete(taskName));
+      const completed = await nameLater(tasksFolder);
+      completed.sort((a, b) => (a.dateCompleted < b.dateCompleted ? 1 : -1));
+      setCompletedTasks(completed);
     } catch {
       setCompletedTasks([]);
     }
   };
 
-  const checkIfComplete = async (taskName) => {
-    let task = await FileSystem.readAsStringAsync(`${tasksDir}/${taskName}`);
-    task = JSON.parse(task);
+  const nameLater = async (tasksFolder) => {
+    const filteredList = [];
+    return new Promise((resolve) => {
+      tasksFolder.map(async (taskName, i) => {
+        let task = await FileSystem.readAsStringAsync(`${tasksDir}/${taskName}`);
+        task = JSON.parse(task);
 
-    if (task.completed) {
-      setCompletedTasks((prevState) => [...prevState, task]);
-    }
+        if (task.completed) {
+          filteredList.push(task);
+        }
+        if (i === tasksFolder.length - 1) {
+          resolve(filteredList);
+        }
+      });
+    });
   };
 
   return (
