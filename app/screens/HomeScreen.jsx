@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button,
+  StyleSheet, Text, View, Button, Modal,
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import TaskWidget from '../components/TaskWidget';
+import PinCode from '../components/PinCode';
 
 export default function HomeScreen({ navigation }) {
   const [taskList, setTaskList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     displayTasks();
@@ -55,6 +57,18 @@ export default function HomeScreen({ navigation }) {
           </>
         ))
         : <Text>No scheduled tasks!</Text>}
+
+      <Button title="Adult area" onPress={() => setModalVisible(true)} />
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <Text>This is the adult check!</Text>
+        <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+        <PinCode />
+      </Modal>
     </View>
   );
 }
