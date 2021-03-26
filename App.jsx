@@ -12,6 +12,7 @@ import TaskScreen from './app/screens/TaskScreen';
 import ProfileScreen from './app/screens/ProfileScreen';
 import SummaryScreen from './app/screens/SummaryScreen';
 import TaskManager from './app/screens/TaskManager';
+import Question from './app/components/Question';
 
 const Stack = createStackNavigator();
 
@@ -44,11 +45,6 @@ export default function App() {
           options={{ title: 'Settings' }}
         />
         <Stack.Screen
-          name="Task"
-          component={TaskScreen}
-          options={{ title: 'Task' }}
-        />
-        <Stack.Screen
           name="Profile"
           component={ProfileScreen}
           options={{ title: 'Profile' }}
@@ -62,6 +58,11 @@ export default function App() {
           name="TaskManager"
           component={TaskManager}
           options={{ title: 'Task Manager' }}
+        />
+        <Stack.Screen
+          name="Question"
+          component={Question}
+          options={{ title: 'Question' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -21,9 +21,11 @@
         "no-use-before-define": "off",
         "react/style-prop-object": "warn",
         "no-unused-vars": "warn",
-        "react/prop-types": "warn",
+        "react/prop-types": "off",
         "global-require": "warn",
         "quote-props": "off",
-        "max-len": "warn"
+        "max-len": "warn",
+        "no-plusplus": "off",
+        "no-param-reassign": "off"
     }
 }

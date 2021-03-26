@@ -4,11 +4,12 @@
     "time": 10,
     "scheduled": null,
     "completed": false,
+    "dateCompleted": null,
     "score": 0,
     "questions": [
         {
             "number": 1,
-            "question-text": "Which fruit is the banana?",
+            "questionText": "Which fruit is the banana?",
             "image": null,
             "answers": [
                 {
@@ -35,7 +36,7 @@
         },
         {
             "number": 2,
-            "question-text": "____ may I have a banana? What word is missing?",
+            "questionText": "____ may I have a banana? What word is missing?",
             "image": null,
             "answers": [
                 {
@@ -62,7 +63,7 @@
         },
         {
             "number": 3,
-            "question-text": "You have been given the banana. What do you say now?",
+            "questionText": "You have been given the banana. What do you say now?",
             "image": null,
             "answers": [
                 {

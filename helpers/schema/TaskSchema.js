@@ -11,6 +11,7 @@ const schema = {
       'required': false,
     },
     'completed': { 'type': 'boolean', 'required': true },
+    'dateCompleted': { 'type': ['date', 'null'], 'required': false },
     'score': { 'type': 'integer', 'required': true },
     'questions': {
       'type': 'array',
@@ -20,7 +21,7 @@ const schema = {
         'type': 'object',
         'properties': {
           'number': { 'type': 'integer' },
-          'question-text': { 'type': 'string' },
+          'questionText': { 'type': 'string' },
           'image': {
             ' type': ['string', 'null'],
             'required': false,
