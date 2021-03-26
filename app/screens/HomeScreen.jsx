@@ -23,6 +23,10 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  const pinSubmitted = (pin) => {
+    console.log(pin);
+  };
+
   return (
     <View>
       <Text style={styles.main}>Home screen</Text>
@@ -67,7 +71,7 @@ export default function HomeScreen({ navigation }) {
       >
         <Text>This is the adult check!</Text>
         <Button title="Dismiss" onPress={() => setModalVisible(false)} />
-        <PinCode />
+        <PinCode onSubmit={pinSubmitted} />
       </Modal>
     </View>
   );

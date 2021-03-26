@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button } from 'react-native';
 
-export default function PinCode() {
+export default function PinCode({ onSubmit }) {
   const [pincode, setPincode] = useState([null, null, null, null]);
   const [pointer, setPointer] = useState(0);
 
@@ -26,7 +26,7 @@ export default function PinCode() {
   };
 
   const submitCode = () => {
-    console.log(pincode);
+    onSubmit(pincode);
   };
 
   return (
