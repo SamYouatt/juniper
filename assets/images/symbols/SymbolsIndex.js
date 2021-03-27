@@ -122,9 +122,6 @@ const SymbolsIndex = {
   silly: {
     uri: require('./silly.png'),
   },
-  sky: {
-    uri: require('./sky.png'),
-  },
   surprised: {
     uri: require('./surprised.png'),
   },
