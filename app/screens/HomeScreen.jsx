@@ -61,27 +61,9 @@ export default function HomeScreen({ navigation }) {
     <View>
       <Text style={styles.main}>Home screen</Text>
       <Button
-        title="Settings"
-        onPress={() => {
-          navigation.navigate('Settings');
-        }}
-      />
-      <Button
         title="Profile"
         onPress={() => {
           navigation.navigate('Profile');
-        }}
-      />
-      <Button
-        title="Summary"
-        onPress={() => {
-          navigation.navigate('Summary');
-        }}
-      />
-      <Button
-        title="Manage Tasks"
-        onPress={() => {
-          navigation.navigate('TaskManager');
         }}
       />
       {taskList.length > 0
