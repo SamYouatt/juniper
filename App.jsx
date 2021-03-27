@@ -13,6 +13,7 @@ import ProfileScreen from './app/screens/ProfileScreen';
 import SummaryScreen from './app/screens/SummaryScreen';
 import TaskManager from './app/screens/TaskManager';
 import Question from './app/components/Question';
+import AdultScreen from './app/screens/AdultScreen';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,11 @@ export default function App() {
           name="Question"
           component={Question}
           options={{ title: 'Question' }}
+        />
+        <Stack.Screen
+          name="Adult"
+          component={AdultScreen}
+          options={{ title: 'Adult Area' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

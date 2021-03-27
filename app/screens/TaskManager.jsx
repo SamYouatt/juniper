@@ -17,7 +17,6 @@ export default function TaskManager() {
   }, [taskList]);
 
   const importTask = async () => {
-    // get file selected from picker and has name
     const file = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,
       type: 'application/json',
@@ -26,7 +25,7 @@ export default function TaskManager() {
       return;
     }
     const name = shorthash.unique(file.name);
-    // make internal tasks directory if not present
+
     const taskDir = `${FileSystem.documentDirectory}tasks`;
     const dirExists = await FileSystem.getInfoAsync(taskDir);
 
@@ -34,21 +33,34 @@ export default function TaskManager() {
       await FileSystem.makeDirectoryAsync(taskDir);
     }
 
-    // copy file to internal if doesn't already exist
+    const tempDir = `${FileSystem.documentDirectory}temp`;
+    const tempdirExists = await FileSystem.getInfoAsync(tempDir);
+
+    if (!tempdirExists.exists) {
+      await FileSystem.makeDirectoryAsync(tempDir);
+    }
+
+    // copy file to temp internal if doesn't already exist
     const filePath = `${taskDir}/${name}`;
+    const tempPath = `${tempDir}/${name}`;
     const alreadyExists = await FileSystem.getInfoAsync(filePath);
 
     if (alreadyExists.exists) {
       Alert.alert(null, 'File already imported');
     } else {
-      const options = { from: file.uri, to: filePath };
+      const options = { from: file.uri, to: tempPath };
       await FileSystem.copyAsync(options);
 
       // delete invalid file formats
-      const validFile = await validateFile(filePath);
+      const validFile = await validateFile(tempPath);
       if (!validFile) {
         Alert.alert(null, 'Invalid file format');
-        await FileSystem.deleteAsync(filePath, { idempotent: true });
+        await FileSystem.deleteAsync(tempPath, { idempotent: true });
+      } else {
+        // move to actual location
+        await FileSystem.deleteAsync(tempPath, { idempotent: true });
+        const finalMove = { from: file.uri, to: filePath };
+        await FileSystem.copyAsync(finalMove);
       }
     }
   };

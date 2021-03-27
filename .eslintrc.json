@@ -26,6 +26,8 @@
         "quote-props": "off",
         "max-len": "warn",
         "no-plusplus": "off",
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "import/no-dynamic-require": "error",
+        "dot-notation": "warn"
     }
 }
