@@ -32,11 +32,6 @@ export default function PinCode({ onSubmit }) {
     }
   };
 
-  const submitCode = (copy) => {
-    console.log(copy);
-    console.log(pincode);
-  };
-
   return (
     <View>
       {pincode && (
