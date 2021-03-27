@@ -10,11 +10,8 @@ import PinCode from '../components/PinCode';
 export default function HomeScreen({ navigation }) {
   const [taskList, setTaskList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [pincode, setPincode] = useState(null);
-  const [pinSet, setPinSet] = useState(null);
 
-  useEffect(async () => {
-    setPinSet(await getPin());
+  useEffect(() => {
     displayTasks();
   }, []);
 
@@ -28,11 +25,8 @@ export default function HomeScreen({ navigation }) {
   };
 
   const pinCheck = async (pin) => {
-    // await getPin();
-    // console.log(pin);
     const actualPin = await getPin();
     console.log(actualPin);
-    setPinSet(actualPin);
     if (pin === actualPin) {
       setModalVisible(false);
 
@@ -43,19 +37,11 @@ export default function HomeScreen({ navigation }) {
   };
 
   const enterAdultArea = async () => {
-    setPinSet(await getPin());
     if (await getPin()) {
       setModalVisible(true);
     } else {
+      Alert.alert(null, 'Consider setting a pin up');
       navigation.navigate('Adult');
-    }
-  };
-
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      // saving error
     }
   };
 
@@ -63,13 +49,10 @@ export default function HomeScreen({ navigation }) {
     try {
       const value = await AsyncStorage.getItem('pin');
       if (value !== null) {
-        setPinSet(value);
         return value;
       }
       return null;
     } catch (e) {
-      // error reading value
-      setPinSet(null);
       return null;
     }
   };
@@ -117,7 +100,7 @@ export default function HomeScreen({ navigation }) {
         onRequestClose={() => setModalVisible(false)}
       >
         <Text>Enter pincode</Text>
-        {pinSet && <PinCode onSubmit={pinCheck} />}
+        <PinCode onSubmit={pinCheck} />
         <Button title="Dismiss" onPress={() => setModalVisible(false)} />
       </Modal>
     </View>
