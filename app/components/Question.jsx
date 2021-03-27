@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  View, Text, Button, Alert,
+  View, Text, Button, Alert, Image,
 } from 'react-native';
 
 import * as FileSystem from 'expo-file-system';
 import shuffle from '../../helpers/Helpers';
+import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 
 export default function Question({ route, navigation }) {
   const [current, setCurrent] = useState(0);
@@ -70,6 +71,8 @@ export default function Question({ route, navigation }) {
           </Text>
         )}
       <Text>{task.questions[current].questionText}</Text>
+      {task.image && task.image in SymbolsIndex && <Image source={SymbolsIndex[`${task.image}`].uri} />}
+      {/* {task.image && <Text>{SymbolsIndex.sky.uri}</Text>} */}
       {questions[current].answers.map((answer) => (
         {
           ...answer.correct
