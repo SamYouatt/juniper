@@ -7,6 +7,9 @@ import {
 import * as FileSystem from 'expo-file-system';
 import shuffle from '../../helpers/Helpers';
 import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
+import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
+
+const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
 export default function Question({ route, navigation }) {
   const [current, setCurrent] = useState(0);
@@ -53,6 +56,52 @@ export default function Question({ route, navigation }) {
     } catch {
       console.log('error writing file');
     }
+
+    const unlockedListPath = `${FileSystem.documentDirectory}unlocks/unlockedList`;
+    const unlockedListInfo = await FileSystem.getInfoAsync(unlockedListPath);
+    let unlockedList = defaultUnlocks;
+
+    if (!unlockedListInfo.exists) {
+      const toSave = JSON.stringify(defaultUnlocks);
+      await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}unlocks`);
+      await FileSystem.writeAsStringAsync(unlockedListPath, toSave);
+    } else {
+      unlockedList = JSON.parse(await FileSystem.readAsStringAsync(unlockedListPath));
+    }
+
+    unlockReward(unlockedList, unlockedListPath);
+  };
+
+  const unlockReward = async (unlockedList, unlockedListPath) => {
+    const unlocks = Object.keys(UnlockablesIndex);
+    const possibleUnlock = unlocks[Math.floor(Math.random() * unlocks.length)];
+    if (possibleUnlock in unlockedList) {
+      unlockReward(unlockedList, unlockedListPath);
+    } else {
+      console.log(`Unlocked ${possibleUnlock}`);
+      unlockedList.push(possibleUnlock);
+      const toSave = JSON.stringify(unlockedList);
+      await FileSystem.writeAsStringAsync(unlockedListPath, toSave);
+    }
+  };
+
+  // TEST FUNCTION
+  const resetUnlocks = async () => {
+    const unlockedListPath = `${FileSystem.documentDirectory}unlocks/unlockedList`;
+    const toSave = JSON.stringify(defaultUnlocks);
+    await FileSystem.writeAsStringAsync(unlockedListPath, toSave);
+    console.log('reset unlocks');
+  };
+
+  // TEST FUNCTION
+  const showUnlocked = async () => {
+    const unlockedListPath = `${FileSystem.documentDirectory}unlocks/unlockedList`;
+    const fileExists = await FileSystem.getInfoAsync(unlockedListPath);
+
+    if (fileExists.exists) {
+      const unlocked = await FileSystem.readAsStringAsync(unlockedListPath);
+      console.log(unlocked);
+    }
   };
 
   return (
@@ -72,13 +121,14 @@ export default function Question({ route, navigation }) {
         )}
       <Text>{task.questions[current].questionText}</Text>
       {task.image && task.image in SymbolsIndex && <Image source={SymbolsIndex[`${task.image}`].uri} />}
-      {/* {task.image && <Text>{SymbolsIndex.sky.uri}</Text>} */}
       {questions[current].answers.map((answer) => (
         {
           ...answer.correct
             ? <Button title={`* ${answer.text ?? ''}`} onPress={rightAnswer} key={answer.text ?? answer.image} />
             : <Button title={answer.text ?? ''} onPress={wrongAnswer} key={answer.text ?? answer.image} />,
         }))}
+      <Button title="Reset unlocks" onPress={resetUnlocks} />
+      <Button title="Show unlocked list" onPress={showUnlocked} />
     </View>
   );
 }
