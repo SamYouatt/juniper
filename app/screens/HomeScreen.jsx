@@ -68,9 +68,7 @@ export default function HomeScreen({ navigation }) {
       />
       {taskList.length > 0
         ? taskList.map((fileName) => (
-          <>
-            <TaskWidget fileName={fileName} key={fileName} navigation={navigation} />
-          </>
+          <TaskWidget fileName={fileName} key={fileName} navigation={navigation} />
         ))
         : <Text>No scheduled tasks!</Text>}
 
