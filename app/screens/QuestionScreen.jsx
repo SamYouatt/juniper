@@ -44,7 +44,6 @@ export default function Question({ route, navigation }) {
   };
 
   const taskCompleted = async () => {
-    console.log('completed task');
     task.score = score;
     const now = new Date().toJSON();
     task.completed = true;
@@ -69,13 +68,17 @@ export default function Question({ route, navigation }) {
       unlockedList = JSON.parse(await FileSystem.readAsStringAsync(unlockedListPath));
     }
 
-    unlockReward(unlockedList, unlockedListPath);
+    if (unlockedList.length < Object.keys(UnlockablesIndex).length) {
+      unlockReward(unlockedList, unlockedListPath);
+    } else {
+      Alert.alert(null, 'All unlocks unlocked');
+    }
   };
 
   const unlockReward = async (unlockedList, unlockedListPath) => {
     const unlocks = Object.keys(UnlockablesIndex);
     const possibleUnlock = unlocks[Math.floor(Math.random() * unlocks.length)];
-    if (possibleUnlock in unlockedList) {
+    if (unlockedList.includes(possibleUnlock)) {
       unlockReward(unlockedList, unlockedListPath);
     } else {
       console.log(`Unlocked ${possibleUnlock}`);
