@@ -5,6 +5,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
+import Reward from '../components/Reward';
 
 const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
@@ -35,8 +36,18 @@ export default function ProfileScreen() {
     }
   };
 
-  const setPreference = async (key, val) => {
-    await AsyncStorage.setItem(key, val);
+  const setAvatar = async (val) => {
+    await AsyncStorage.setItem('avatar', val);
+    loadPreferences();
+    loadUnlocks();
+    setAvatarModal(false);
+  };
+
+  const setBackground = async (val) => {
+    await AsyncStorage.setItem('background', val);
+    loadPreferences();
+    loadUnlocks();
+    setBackgroundModal(false);
   };
 
   const loadUnlocks = async () => {
@@ -71,15 +82,27 @@ export default function ProfileScreen() {
 
       <Modal animationType="slide" visible={backgroundModal} transparent={false} onRequestClose={() => setBackgroundModal(false)}>
         <Text>Background chooser</Text>
+        {unlockedBackgrounds.map((unlock) => (
+          <Reward
+            key={unlock}
+            uri={UnlockablesIndex[unlock].uri}
+            reward={unlock}
+            setPreference={setBackground}
+          />
+        ))}
       </Modal>
 
       <Modal animationType="slide" visible={avatarModal} transparent={false} onRequestClose={() => setAvatarModal(false)}>
         <Text>Avatar chooser</Text>
+        {unlockedAvatars.map((unlock) => (
+          <Reward
+            key={unlock}
+            uri={UnlockablesIndex[unlock].uri}
+            reward={unlock}
+            setPreference={setAvatar}
+          />
+        ))}
       </Modal>
-
-      <Button title="Test" onPress={loadUnlocks} />
-      <Button title="Test2" onPress={() => console.log(unlockedAvatars)} />
-
     </View>
   );
 }
