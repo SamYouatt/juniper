@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, Button, Modal,
+  View, Text, Button, Modal, TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
@@ -12,46 +12,28 @@ const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefa
 export default function ProfileScreen() {
   const [chosenBackground, setChosenBackground] = useState('sunny');
   const [chosenAvatar, setChosenAvatar] = useState('boy1');
+  const [description, setDescription] = useState('Create a description for your profile!');
+  const [tempDescription, setTempDescription] = useState();
+
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([]);
   const [unlockedAvatars, setUnlockedAvatars] = useState([]);
+
   const [backgroundModal, setBackgroundModal] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
+  const [descriptionModal, setDescriptionModal] = useState(false);
 
   const unlockedListPath = `${FileSystem.documentDirectory}unlocks/unlockedList`;
 
   useEffect(() => {
-    loadPreferences();
-    loadUnlocks();
+    update();
   }, []);
 
-  const loadPreferences = async () => {
-    const background = await AsyncStorage.getItem('background');
-    const avatar = await AsyncStorage.getItem('avatar');
-
-    if (background) {
-      setChosenBackground(background);
-    }
-    if (avatar) {
-      setChosenAvatar(avatar);
-    }
-  };
-
-  const setAvatar = async (val) => {
-    await AsyncStorage.setItem('avatar', val);
+  const update = () => {
     loadPreferences();
     loadUnlocks();
-    setAvatarModal(false);
-  };
-
-  const setBackground = async (val) => {
-    await AsyncStorage.setItem('background', val);
-    loadPreferences();
-    loadUnlocks();
-    setBackgroundModal(false);
   };
 
   const loadUnlocks = async () => {
-    //
     const unlocksExist = await FileSystem.getInfoAsync(unlockedListPath);
     if (unlocksExist.exists) {
       const unlocks = JSON.parse(await FileSystem.readAsStringAsync(unlockedListPath));
@@ -71,14 +53,49 @@ export default function ProfileScreen() {
     }
   };
 
+  const loadPreferences = async () => {
+    const background = await AsyncStorage.getItem('background');
+    const avatar = await AsyncStorage.getItem('avatar');
+    const desc = await AsyncStorage.getItem('description');
+
+    if (background) {
+      setChosenBackground(background);
+    }
+    if (avatar) {
+      setChosenAvatar(avatar);
+    }
+    if (desc) {
+      setDescription(desc);
+    }
+  };
+
+  const setAvatar = async (val) => {
+    await AsyncStorage.setItem('avatar', val);
+    update();
+    setAvatarModal(false);
+  };
+
+  const setBackground = async (val) => {
+    await AsyncStorage.setItem('background', val);
+    update();
+    setBackgroundModal(false);
+  };
+
+  const setDescriptionPref = async (val) => {
+    await AsyncStorage.setItem('description', val);
+    update();
+    setDescriptionModal(false);
+  };
+
   return (
     <View>
-      <Text>Profile</Text>
       <Text>{chosenBackground}</Text>
       <Text>{chosenAvatar}</Text>
+      <Text>{description}</Text>
 
       <Button title="Choose background" onPress={() => setBackgroundModal(true)} />
       <Button title="Choose avatar" onPress={() => setAvatarModal(true)} />
+      <Button title="Change Decsription" onPress={() => setDescriptionModal(true)} />
 
       <Modal animationType="slide" visible={backgroundModal} transparent={false} onRequestClose={() => setBackgroundModal(false)}>
         <Text>Background chooser</Text>
@@ -102,6 +119,18 @@ export default function ProfileScreen() {
             setPreference={setAvatar}
           />
         ))}
+      </Modal>
+
+      <Modal animationType="slide" visible={descriptionModal} transparent={false} onRequestClose={() => setDescriptionModal(false)}>
+        <Text>Description editor</Text>
+        <TextInput
+          multiline={false}
+          maxLength={250}
+          defaultValue={description}
+          onSubmitEditing={(value) => setDescription(value)}
+          onChangeText={(value) => setTempDescription(value)}
+        />
+        <Button title="Submit" onPress={() => setDescriptionPref(tempDescription)} />
       </Modal>
     </View>
   );
