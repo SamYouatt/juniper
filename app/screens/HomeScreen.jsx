@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, Button, Modal, Alert,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TaskWidget from '../components/TaskWidget';
@@ -14,6 +16,10 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     displayTasks();
   }, []);
+
+  useFocusEffect(() => {
+    displayTasks();
+  });
 
   const displayTasks = async () => {
     try {
@@ -68,9 +74,7 @@ export default function HomeScreen({ navigation }) {
       />
       {taskList.length > 0
         ? taskList.map((fileName) => (
-          <>
-            <TaskWidget fileName={fileName} key={fileName} navigation={navigation} />
-          </>
+          <TaskWidget fileName={fileName} key={fileName} navigation={navigation} />
         ))
         : <Text>No scheduled tasks!</Text>}
 

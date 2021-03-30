@@ -12,7 +12,7 @@ import TaskScreen from './app/screens/TaskScreen';
 import ProfileScreen from './app/screens/ProfileScreen';
 import SummaryScreen from './app/screens/SummaryScreen';
 import TaskManager from './app/screens/TaskManager';
-import Question from './app/components/Question';
+import Question from './app/screens/QuestionScreen';
 import AdultScreen from './app/screens/AdultScreen';
 
 const Stack = createStackNavigator();

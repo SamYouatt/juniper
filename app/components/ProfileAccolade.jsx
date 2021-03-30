@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
+import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, Button } from 'react-native';
 
-export default function Summary({ tasks }) {
+export default function ProfileAccolade({ tasks }) {
   const [dayList, setDayList] = useState([]);
   const [weekList, setWeekList] = useState([]);
   const [monthList, setMonthList] = useState([]);
@@ -10,7 +10,7 @@ export default function Summary({ tasks }) {
   useEffect(() => {
     console.log(`at start: ${tasks}`);
     tasks.map((task) => putInLists(task));
-  }, []);
+  }, [tasks]);
 
   const daysBetween = (date1, date2) => {
     const d1 = new Date(date1);
