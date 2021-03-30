@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet, Text, View, Button, Modal, Alert,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,23 +11,33 @@ import PinCode from '../components/PinCode';
 
 export default function HomeScreen({ navigation }) {
   const [taskList, setTaskList] = useState([]);
+  const [taskNames, setTaskNames] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const focus = useIsFocused();
 
   useEffect(() => {
-    displayTasks();
-  }, []);
-
-  useFocusEffect(() => {
-    displayTasks();
-  });
-
-  const displayTasks = async () => {
-    try {
-      const contents = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
-      setTaskList(contents);
-    } catch {
+    if (focus) {
+      setTaskNames([]);
       setTaskList([]);
+      loadTasks();
     }
+  }, [focus]);
+
+  const loadTasks = async () => {
+    const allTasks = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
+    const incompleteTasks = [];
+    const taskNamesList = [];
+
+    allTasks.map(async (taskName) => {
+      const task = JSON.parse(await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}tasks/${taskName}`));
+
+      if (!task.completed) {
+        incompleteTasks.push(task);
+        setTaskList((prevState) => [...prevState, task]);
+        setTaskNames((prevState) => [...prevState, taskName]);
+        taskNamesList.push(taskName);
+      }
+    });
   };
 
   const pinCheck = async (pin) => {
@@ -72,12 +82,11 @@ export default function HomeScreen({ navigation }) {
           navigation.navigate('Profile');
         }}
       />
-      {taskList.length > 0
-        ? taskList.map((fileName) => (
-          <TaskWidget fileName={fileName} key={fileName} navigation={navigation} />
+      {taskNames.length > 0
+        ? taskNames.map((fileName, index) => (
+          <TaskWidget fileName={fileName} key={fileName} taskObject={taskList[index]} navigation={navigation} />
         ))
         : <Text>No scheduled tasks!</Text>}
-
       <Button title="Adult area" onPress={enterAdultArea} />
       <Modal
         animationType="slide"
@@ -89,6 +98,8 @@ export default function HomeScreen({ navigation }) {
         <PinCode onSubmit={pinCheck} />
         <Button title="Dismiss" onPress={() => setModalVisible(false)} />
       </Modal>
+
+      <Button title="test" onPress={() => console.log(taskNames)} />
     </View>
   );
 }
