@@ -10,32 +10,32 @@ import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
 
 export default function HomeScreen({ navigation }) {
-  const [taskList, setTaskList] = useState([]);
-  const [taskNames, setTaskNames] = useState([]);
+  const [scheduledTasks, setScheduledTasks] = useState([]);
+  const [unscheduledTasks, setUnscheduledTasks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const focus = useIsFocused();
 
   useEffect(() => {
     if (focus) {
-      setTaskNames([]);
-      setTaskList([]);
+      setUnscheduledTasks([]);
+      setScheduledTasks([]);
       loadTasks();
     }
   }, [focus]);
 
   const loadTasks = async () => {
     const allTasks = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
-    const incompleteTasks = [];
-    const taskNamesList = [];
 
     allTasks.map(async (taskName) => {
       const task = JSON.parse(await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}tasks/${taskName}`));
 
       if (!task.completed) {
-        incompleteTasks.push(task);
-        setTaskList((prevState) => [...prevState, task]);
-        setTaskNames((prevState) => [...prevState, taskName]);
-        taskNamesList.push(taskName);
+        const asObject = { task, taskName };
+        if (task.scheduled) {
+          setScheduledTasks((prevState) => [...prevState, asObject]);
+        } else {
+          setUnscheduledTasks((prevState) => [...prevState, asObject]);
+        }
       }
     });
   };
@@ -82,16 +82,36 @@ export default function HomeScreen({ navigation }) {
           navigation.navigate('Profile');
         }}
       />
-      {taskNames.length > 0
-        ? taskNames.map((fileName, index) => (
+
+      <Text>Scheduled Tasks</Text>
+
+      {scheduledTasks.length > 0
+        ? scheduledTasks.map((task) => (
+          <>
+            <Text key={`empty${task.taskName}`}>{task.task.scheduled}</Text>
+            <TaskWidget
+              fileName={task.taskName}
+              key={task.taskName}
+              task={task.task}
+              navigation={navigation}
+            />
+          </>
+        ))
+        : <Text>No scheduled tasks!</Text>}
+
+      <Text>Unscheduled Tasks</Text>
+
+      {unscheduledTasks.length > 0
+        ? unscheduledTasks.map((task) => (
           <TaskWidget
-            fileName={fileName}
-            key={fileName}
-            task={taskList[index]}
+            fileName={task.taskName}
+            key={task.taskName}
+            task={task.task}
             navigation={navigation}
           />
         ))
         : <Text>No scheduled tasks!</Text>}
+
       <Button title="Adult area" onPress={enterAdultArea} />
       <Modal
         animationType="slide"
@@ -103,8 +123,6 @@ export default function HomeScreen({ navigation }) {
         <PinCode onSubmit={pinCheck} />
         <Button title="Dismiss" onPress={() => setModalVisible(false)} />
       </Modal>
-
-      <Button title="test" onPress={() => console.log(taskNames)} />
     </View>
   );
 }
