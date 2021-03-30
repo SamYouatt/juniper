@@ -84,7 +84,12 @@ export default function HomeScreen({ navigation }) {
       />
       {taskNames.length > 0
         ? taskNames.map((fileName, index) => (
-          <TaskWidget fileName={fileName} key={fileName} taskObject={taskList[index]} navigation={navigation} />
+          <TaskWidget
+            fileName={fileName}
+            key={fileName}
+            task={taskList[index]}
+            navigation={navigation}
+          />
         ))
         : <Text>No scheduled tasks!</Text>}
       <Button title="Adult area" onPress={enterAdultArea} />

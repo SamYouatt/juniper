@@ -1,29 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View, Text, Alert, TouchableHighlight,
 } from 'react-native';
-import * as FileSystem from 'expo-file-system';
 
-export default function TaskWidget({ fileName, navigation }) {
-  const [task, setTask] = useState(null);
-  const filePath = `${FileSystem.documentDirectory}tasks/${fileName}`;
-
-  useEffect(() => {
-    readFile();
-  }, [task]);
-
+export default function TaskWidget({ fileName, task, navigation }) {
   const loadTask = () => {
     navigation.navigate('Question', { task, fileName });
-  };
-
-  const readFile = async () => {
-    try {
-      const fileContents = await FileSystem.readAsStringAsync(filePath).then();
-      const json = JSON.parse(fileContents);
-      setTask(json);
-    } catch {
-      setTask(null);
-    }
   };
 
   return (
