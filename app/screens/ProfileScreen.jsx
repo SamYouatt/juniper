@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
 import Reward from '../components/Reward';
+import ProfileAccolade from '../components/ProfileAccolade';
 
 const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
@@ -22,10 +23,14 @@ export default function ProfileScreen() {
   const [avatarModal, setAvatarModal] = useState(false);
   const [descriptionModal, setDescriptionModal] = useState(false);
 
+  const [completedTasks, setCompletedTasks] = useState([]);
+
   const unlockedListPath = `${FileSystem.documentDirectory}unlocks/unlockedList`;
+  const tasksDir = `${FileSystem.documentDirectory}tasks`;
 
   useEffect(() => {
     update();
+    loadTasks();
   }, []);
 
   const update = () => {
@@ -35,22 +40,27 @@ export default function ProfileScreen() {
 
   const loadUnlocks = async () => {
     const unlocksExist = await FileSystem.getInfoAsync(unlockedListPath);
-    if (unlocksExist.exists) {
-      const unlocks = JSON.parse(await FileSystem.readAsStringAsync(unlockedListPath));
-      const backgrounds = [];
-      const avatars = [];
-      unlocks.map((unlock) => {
-        if (UnlockablesIndex[unlock].type === 'background') {
-          backgrounds.push(unlock);
-        } else if (UnlockablesIndex[unlock].type === 'avatar') {
-          avatars.push(unlock);
-        }
-        return null;
-      });
+    let unlocks = null;
 
-      setUnlockedAvatars(avatars);
-      setUnlockedBackgrounds(backgrounds);
+    if (unlocksExist.exists) {
+      unlocks = JSON.parse(await FileSystem.readAsStringAsync(unlockedListPath));
+    } else {
+      unlocks = defaultUnlocks;
     }
+
+    const backgrounds = [];
+    const avatars = [];
+    unlocks.map((unlock) => {
+      if (UnlockablesIndex[unlock].type === 'background') {
+        backgrounds.push(unlock);
+      } else if (UnlockablesIndex[unlock].type === 'avatar') {
+        avatars.push(unlock);
+      }
+      return null;
+    });
+
+    setUnlockedAvatars(avatars);
+    setUnlockedBackgrounds(backgrounds);
   };
 
   const loadPreferences = async () => {
@@ -67,6 +77,34 @@ export default function ProfileScreen() {
     if (desc) {
       setDescription(desc);
     }
+  };
+
+  const loadTasks = async () => {
+    try {
+      const tasksFolder = await FileSystem.readDirectoryAsync(tasksDir);
+      const completed = await nameLater(tasksFolder);
+      completed.sort((a, b) => (a.dateCompleted < b.dateCompleted ? 1 : -1));
+      setCompletedTasks(completed);
+    } catch {
+      setCompletedTasks([]);
+    }
+  };
+
+  const nameLater = async (tasksFolder) => {
+    const filteredList = [];
+    return new Promise((resolve) => {
+      tasksFolder.map(async (taskName, i) => {
+        let task = await FileSystem.readAsStringAsync(`${tasksDir}/${taskName}`);
+        task = JSON.parse(task);
+
+        if (task.completed) {
+          filteredList.push(task);
+        }
+        if (i === tasksFolder.length - 1) {
+          resolve(filteredList);
+        }
+      });
+    });
   };
 
   const setAvatar = async (val) => {
@@ -96,6 +134,8 @@ export default function ProfileScreen() {
       <Button title="Choose background" onPress={() => setBackgroundModal(true)} />
       <Button title="Choose avatar" onPress={() => setAvatarModal(true)} />
       <Button title="Change Decsription" onPress={() => setDescriptionModal(true)} />
+
+      {completedTasks.length > 0 && <ProfileAccolade tasks={completedTasks} />}
 
       <Modal animationType="slide" visible={backgroundModal} transparent={false} onRequestClose={() => setBackgroundModal(false)}>
         <Text>Background chooser</Text>
@@ -132,6 +172,7 @@ export default function ProfileScreen() {
         />
         <Button title="Submit" onPress={() => setDescriptionPref(tempDescription)} />
       </Modal>
+
     </View>
   );
 }
