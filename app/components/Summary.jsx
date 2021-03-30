@@ -50,11 +50,11 @@ export default function Summary({ tasks }) {
         </Text>
       )
         : <Text>No tasks completed this week</Text>}
-      {dayList.length > 0 ? (
+      {monthList.length > 0 ? (
         <Text>
           Tasks completed this month:
           {' '}
-          {dayList.length}
+          {monthList.length}
         </Text>
       )
         : <Text>No tasks completed this month</Text>}
