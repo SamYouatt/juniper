@@ -123,7 +123,7 @@ export default function Question({ route, navigation }) {
           </Text>
         )}
       <Text>{task.questions[current].questionText}</Text>
-      {task.image && task.image in SymbolsIndex && <Image source={SymbolsIndex[`${task.image}`].uri} />}
+      {task.questions[current].image && task.questions[current].image in SymbolsIndex && <Image source={SymbolsIndex[`${task.questions[current].image}`].uri} />}
       {questions[current].answers.map((answer) => (
         {
           ...answer.correct
