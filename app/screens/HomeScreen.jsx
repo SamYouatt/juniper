@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet, Text, View, Button, Modal, Alert,
 } from 'react-native';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
 
@@ -73,6 +74,18 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  const prettyDate = (date) => {
+    const dt = DateTime.fromISO(date);
+
+    const weekday = dt.weekdayLong;
+    const month = dt.monthLong;
+    const day = dt.daysInMonth;
+    const time = dt.toLocaleString(DateTime.TIME_24_SIMPLE);
+    const formatted = `${weekday}, ${day} ${month} at ${time}`;
+
+    return formatted;
+  };
+
   return (
     <View>
       <Text style={styles.main}>Home screen</Text>
@@ -88,7 +101,7 @@ export default function HomeScreen({ navigation }) {
       {scheduledTasks.length > 0
         ? scheduledTasks.map((task) => (
           <>
-            <Text key={`empty${task.taskName}`}>{task.task.scheduled}</Text>
+            <Text key={`empty${task.taskName}`}>{prettyDate(task.task.scheduled)}</Text>
             <TaskWidget
               fileName={task.taskName}
               key={task.taskName}
@@ -110,7 +123,7 @@ export default function HomeScreen({ navigation }) {
             navigation={navigation}
           />
         ))
-        : <Text>No scheduled tasks!</Text>}
+        : <Text>No unscheduled tasks!</Text>}
 
       <Button title="Adult area" onPress={enterAdultArea} />
       <Modal
