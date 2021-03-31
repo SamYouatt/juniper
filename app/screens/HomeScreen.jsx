@@ -27,23 +27,31 @@ export default function HomeScreen({ navigation }) {
   const loadTasks = async () => {
     const allTasks = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
 
+    const unscheduled = [];
+    const scheduled = [];
+
     allTasks.map(async (taskName) => {
       const task = JSON.parse(await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}tasks/${taskName}`));
 
       if (!task.completed) {
         const asObject = { task, taskName };
         if (task.scheduled) {
-          setScheduledTasks((prevState) => [...prevState, asObject]);
+          scheduled.push(asObject);
         } else {
-          setUnscheduledTasks((prevState) => [...prevState, asObject]);
+          unscheduled.push(asObject);
         }
       }
+
+      scheduled.sort((a, b) => (a.task.scheduled < b.task.scheduled ? -1 : 1));
+
+      setScheduledTasks([...scheduled]);
+      setUnscheduledTasks([...unscheduled]);
     });
   };
 
   const pinCheck = async (pin) => {
     const actualPin = await getPin();
-    console.log(actualPin);
+    console.log(`actual Pin: ${actualPin}`);
     if (pin === actualPin) {
       setModalVisible(false);
 
@@ -79,7 +87,7 @@ export default function HomeScreen({ navigation }) {
 
     const weekday = dt.weekdayLong;
     const month = dt.monthLong;
-    const day = dt.daysInMonth;
+    const { day } = dt;
     const time = dt.toLocaleString(DateTime.TIME_24_SIMPLE);
     const formatted = `${weekday}, ${day} ${month} at ${time}`;
 
