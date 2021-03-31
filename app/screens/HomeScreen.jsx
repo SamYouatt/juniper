@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, Button, Modal, Alert,
 } from 'react-native';
@@ -18,11 +18,15 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     if (focus) {
-      setUnscheduledTasks([]);
-      setScheduledTasks([]);
-      loadTasks();
+      refresh();
     }
   }, [focus]);
+
+  const refresh = () => {
+    setUnscheduledTasks([]);
+    setScheduledTasks([]);
+    loadTasks();
+  };
 
   const loadTasks = async () => {
     const allTasks = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
@@ -94,6 +98,13 @@ export default function HomeScreen({ navigation }) {
     return formatted;
   };
 
+  const scheduleTask = async (fileName, task, date) => {
+    task.scheduled = date;
+    const asString = JSON.stringify(task);
+    await FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}tasks/${fileName}`, asString);
+    refresh();
+  };
+
   return (
     <View>
       <Text style={styles.main}>Home screen</Text>
@@ -129,6 +140,7 @@ export default function HomeScreen({ navigation }) {
             key={task.taskName}
             task={task.task}
             navigation={navigation}
+            scheduleTask={scheduleTask}
           />
         ))
         : <Text>No unscheduled tasks!</Text>}
