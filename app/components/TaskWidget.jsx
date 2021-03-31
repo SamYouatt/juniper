@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-  View, Text, Alert, TouchableHighlight, Button,
+  View, Text, TouchableHighlight, Button,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
@@ -15,10 +15,6 @@ export default function TaskWidget({
   const loadTask = () => {
     console.log('pressed touchable');
     navigation.navigate('Question', { task, fileName });
-  };
-
-  const schedule = () => {
-    scheduleTask(fileName);
   };
 
   const handleDateConfirm = async (value) => {
