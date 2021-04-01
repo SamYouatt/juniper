@@ -55,7 +55,6 @@ export default function Question({ route, navigation }) {
     const stringTask = JSON.stringify(task);
     try {
       await FileSystem.writeAsStringAsync(filePath, stringTask);
-      // navigation.navigate('Home');
     } catch {
       console.log('error writing file');
     }
@@ -90,7 +89,6 @@ export default function Question({ route, navigation }) {
       const toSave = JSON.stringify(unlockedList);
       await FileSystem.writeAsStringAsync(unlockedListPath, toSave);
       setUnlockedReward(possibleUnlock);
-      console.log(`here -> ${possibleUnlock}`);
       setRewardModalVisible(true);
     }
   };
@@ -137,10 +135,16 @@ export default function Question({ route, navigation }) {
             ? <Button title={`* ${answer.text ?? ''}`} onPress={rightAnswer} key={answer.text ?? answer.image} />
             : <Button title={answer.text ?? ''} onPress={wrongAnswer} key={answer.text ?? answer.image} />,
         }))}
+
+      <Unlock
+        modalVisible={rewardModalVisible}
+        unlocked={unlockedReward}
+        navigation={navigation}
+        setModalVisible={setRewardModalVisible}
+      />
+
       <Button title="Reset unlocks" onPress={resetUnlocks} />
       <Button title="Show unlocked list" onPress={showUnlocked} />
-
-      <Unlock modalVisible={rewardModalVisible} unlocked={unlockedReward} navigation={navigation} setModalVisible={setRewardModalVisible} />
     </View>
   );
 }
