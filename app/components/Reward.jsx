@@ -10,7 +10,7 @@ export default function Reward({ reward, uri, setPreference }) {
         underlayColor="#ffffff"
         onPress={() => setPreference(reward)}
       >
-        <Image source={uri} />
+        <Image source={uri} style={{ width: 200, height: 200 }} />
       </TouchableHighlight>
     </View>
   );

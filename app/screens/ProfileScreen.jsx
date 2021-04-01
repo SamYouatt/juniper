@@ -5,8 +5,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
-import Reward from '../components/Reward';
 import ProfileAccolade from '../components/ProfileAccolade';
+import UnlocksPicker from '../components/UnlocksPicker';
 
 const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
@@ -137,29 +137,21 @@ export default function ProfileScreen() {
 
       {completedTasks.length > 0 && <ProfileAccolade tasks={completedTasks} />}
 
-      <Modal animationType="slide" visible={backgroundModal} transparent={false} onRequestClose={() => setBackgroundModal(false)}>
-        <Text>Background chooser</Text>
-        {unlockedBackgrounds.map((unlock) => (
-          <Reward
-            key={unlock}
-            uri={UnlockablesIndex[unlock].uri}
-            reward={unlock}
-            setPreference={setBackground}
-          />
-        ))}
-      </Modal>
+      <UnlocksPicker
+        visible={backgroundModal}
+        topMessage="Choose a background"
+        unlocks={unlockedBackgrounds}
+        preferenceFunction={setBackground}
+        setVisible={setBackgroundModal}
+      />
 
-      <Modal animationType="slide" visible={avatarModal} transparent={false} onRequestClose={() => setAvatarModal(false)}>
-        <Text>Avatar chooser</Text>
-        {unlockedAvatars.map((unlock) => (
-          <Reward
-            key={unlock}
-            uri={UnlockablesIndex[unlock].uri}
-            reward={unlock}
-            setPreference={setAvatar}
-          />
-        ))}
-      </Modal>
+      <UnlocksPicker
+        visible={avatarModal}
+        topMessage="Choose an avatar"
+        unlocks={unlockedAvatars}
+        preferenceFunction={setAvatar}
+        setVisible={setAvatarModal}
+      />
 
       <Modal animationType="slide" visible={descriptionModal} transparent={false} onRequestClose={() => setDescriptionModal(false)}>
         <Text>Description editor</Text>

@@ -7,11 +7,10 @@ const schema = {
     'image': { 'type': 'string', 'required': true },
     'time': { 'type': 'integer', 'required': true },
     'scheduled': {
-      'type': ['date', 'null'],
       'required': false,
     },
     'completed': { 'type': 'boolean', 'required': true },
-    'dateCompleted': { 'type': ['date', 'null'], 'required': false },
+    'dateCompleted': { 'required': false },
     'score': { 'type': 'integer', 'required': true },
     'questions': {
       'type': 'array',

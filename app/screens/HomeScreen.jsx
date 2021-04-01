@@ -2,37 +2,60 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, Button, Modal, Alert,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
 
 export default function HomeScreen({ navigation }) {
-  const [taskList, setTaskList] = useState([]);
+  const [scheduledTasks, setScheduledTasks] = useState([]);
+  const [unscheduledTasks, setUnscheduledTasks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const focus = useIsFocused();
 
   useEffect(() => {
-    displayTasks();
-  }, []);
-
-  useFocusEffect(() => {
-    displayTasks();
-  });
-
-  const displayTasks = async () => {
-    try {
-      const contents = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
-      setTaskList(contents);
-    } catch {
-      setTaskList([]);
+    if (focus) {
+      refresh();
     }
+  }, [focus]);
+
+  const refresh = () => {
+    setUnscheduledTasks([]);
+    setScheduledTasks([]);
+    loadTasks();
+  };
+
+  const loadTasks = async () => {
+    const allTasks = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}tasks`);
+
+    const unscheduled = [];
+    const scheduled = [];
+
+    allTasks.map(async (taskName) => {
+      const task = JSON.parse(await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}tasks/${taskName}`));
+
+      if (!task.completed) {
+        const asObject = { task, taskName };
+        if (task.scheduled) {
+          scheduled.push(asObject);
+        } else {
+          unscheduled.push(asObject);
+        }
+      }
+
+      scheduled.sort((a, b) => (a.task.scheduled < b.task.scheduled ? -1 : 1));
+
+      setScheduledTasks([...scheduled]);
+      setUnscheduledTasks([...unscheduled]);
+    });
   };
 
   const pinCheck = async (pin) => {
     const actualPin = await getPin();
-    console.log(actualPin);
+    console.log(`actual Pin: ${actualPin}`);
     if (pin === actualPin) {
       setModalVisible(false);
 
@@ -63,6 +86,25 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  const prettyDate = (date) => {
+    const dt = DateTime.fromISO(date);
+
+    const weekday = dt.weekdayLong;
+    const month = dt.monthLong;
+    const { day } = dt;
+    const time = dt.toLocaleString(DateTime.TIME_24_SIMPLE);
+    const formatted = `${weekday}, ${day} ${month} at ${time}`;
+
+    return formatted;
+  };
+
+  const scheduleTask = async (fileName, task, date) => {
+    task.scheduled = date;
+    const asString = JSON.stringify(task);
+    await FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}tasks/${fileName}`, asString);
+    refresh();
+  };
+
   return (
     <View>
       <Text style={styles.main}>Home screen</Text>
@@ -72,11 +114,36 @@ export default function HomeScreen({ navigation }) {
           navigation.navigate('Profile');
         }}
       />
-      {taskList.length > 0
-        ? taskList.map((fileName) => (
-          <TaskWidget fileName={fileName} key={fileName} navigation={navigation} />
+
+      <Text>Scheduled Tasks</Text>
+
+      {scheduledTasks.length > 0
+        ? scheduledTasks.map((task) => (
+          <>
+            <Text key={`empty${task.taskName}`}>{prettyDate(task.task.scheduled)}</Text>
+            <TaskWidget
+              fileName={task.taskName}
+              key={task.taskName}
+              task={task.task}
+              navigation={navigation}
+            />
+          </>
         ))
         : <Text>No scheduled tasks!</Text>}
+
+      <Text>Unscheduled Tasks</Text>
+
+      {unscheduledTasks.length > 0
+        ? unscheduledTasks.map((task) => (
+          <TaskWidget
+            fileName={task.taskName}
+            key={task.taskName}
+            task={task.task}
+            navigation={navigation}
+            scheduleTask={scheduleTask}
+          />
+        ))
+        : <Text>No unscheduled tasks!</Text>}
 
       <Button title="Adult area" onPress={enterAdultArea} />
       <Modal

@@ -1,0 +1,173 @@
+{
+    "name": "Learning About My Feelings",
+    "image": "proud",
+    "time": 15,
+    "scheduled": null,
+    "completed": false,
+    "dateCompleted": null,
+    "score": 0,
+    "questions": [
+        {
+            "number": 1,
+            "questionText": "You notice someone looking like this. How do you think they are feeling?",
+            "image": "nervous",
+            "answers": [
+                {
+                    "text": "Nervous",
+                    "correct": true,
+                    "image": null
+                },
+                {
+                    "text": "Excited",
+                    "correct": false,
+                    "image": null
+                },
+                {
+                    "text": "Scared",
+                    "correct": false,
+                    "image": null
+                },
+                {
+                    "text": "Sick",
+                    "correct": false,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "questionText": "You have just been given a new toy! Which symbol describes how you are feeling?",
+            "image": null,
+            "answers": [
+                {
+                    "text": "Excited",
+                    "correct": true,
+                    "image": "excited"
+                },
+                {
+                    "text": "Hungry",
+                    "correct": false,
+                    "image": "hungry"
+                },
+                {
+                    "text": "Relieved",
+                    "correct": false,
+                    "image": "relieved"
+                },
+                {
+                    "text": "Tired",
+                    "correct": false,
+                    "image": "tired"
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "questionText": "Choose the symbol that means scared",
+            "image": null,
+            "answers": [
+                {
+                    "text": null,
+                    "correct": true,
+                    "image": "scared"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "hungry"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "silly"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "sick"
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "questionText": "You haven't eaten since lunchtime and your parent asks you how you are feeling. Which one will you use?",
+            "image": null,
+            "answers": [
+                {
+                    "text": null,
+                    "correct": true,
+                    "image": "hungry"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "ill"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "relieved"
+                },
+                {
+                    "text": null,
+                    "correct": false,
+                    "image": "surprised"
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "questionText": "This person has been trying to do a hard puzzle for a long time. How are they feeling?",
+            "image": "discouraged",
+            "answers": [
+                {
+                    "text": "Discouraged",
+                    "correct": true,
+                    "image": null
+                },
+                {
+                    "text": "Happy",
+                    "correct": false,
+                    "image": null
+                },
+                {
+                    "text": "Ill",
+                    "correct": false,
+                    "image": null
+                },
+                {
+                    "text": "Scared",
+                    "correct": false,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "number": 6,
+            "questionText": "You don't understand a question that your teacher has asked. Which symbol will you use?",
+            "image": null,
+            "answers": [
+                {
+                    "text": "Confused",
+                    "correct": true,
+                    "image": "confused"
+                },
+                {
+                    "text": "Scared",
+                    "correct": false,
+                    "image": "scared"
+                },
+                {
+                    "text": "Silly",
+                    "correct": false,
+                    "image": "silly"
+                },
+                {
+                    "text": "Discouraged",
+                    "correct": true,
+                    "image": "discouraged"
+                }
+            ]
+        }
+    ]
+}

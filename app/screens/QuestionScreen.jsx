@@ -8,12 +8,16 @@ import * as FileSystem from 'expo-file-system';
 import shuffle from '../../helpers/Helpers';
 import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
+import Unlock from '../components/UnlockedReward';
 
 const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
 export default function Question({ route, navigation }) {
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
+  const [rewardModalVisible, setRewardModalVisible] = useState(false);
+  const [unlockedReward, setUnlockedReward] = useState();
+
   const { task } = route.params;
   const { fileName } = route.params;
   const { questions } = task;
@@ -51,7 +55,6 @@ export default function Question({ route, navigation }) {
     const stringTask = JSON.stringify(task);
     try {
       await FileSystem.writeAsStringAsync(filePath, stringTask);
-      navigation.navigate('Home');
     } catch {
       console.log('error writing file');
     }
@@ -85,6 +88,8 @@ export default function Question({ route, navigation }) {
       unlockedList.push(possibleUnlock);
       const toSave = JSON.stringify(unlockedList);
       await FileSystem.writeAsStringAsync(unlockedListPath, toSave);
+      setUnlockedReward(possibleUnlock);
+      setRewardModalVisible(true);
     }
   };
 
@@ -123,13 +128,21 @@ export default function Question({ route, navigation }) {
           </Text>
         )}
       <Text>{task.questions[current].questionText}</Text>
-      {task.image && task.image in SymbolsIndex && <Image source={SymbolsIndex[`${task.image}`].uri} />}
+      {task.questions[current].image && task.questions[current].image in SymbolsIndex && <Image source={SymbolsIndex[`${task.questions[current].image}`].uri} />}
       {questions[current].answers.map((answer) => (
         {
           ...answer.correct
             ? <Button title={`* ${answer.text ?? ''}`} onPress={rightAnswer} key={answer.text ?? answer.image} />
             : <Button title={answer.text ?? ''} onPress={wrongAnswer} key={answer.text ?? answer.image} />,
         }))}
+
+      <Unlock
+        modalVisible={rewardModalVisible}
+        unlocked={unlockedReward}
+        navigation={navigation}
+        setModalVisible={setRewardModalVisible}
+      />
+
       <Button title="Reset unlocks" onPress={resetUnlocks} />
       <Button title="Show unlocked list" onPress={showUnlocked} />
     </View>
