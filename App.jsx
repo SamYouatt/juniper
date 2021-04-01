@@ -2,7 +2,9 @@ import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, View, Image,
+} from 'react-native';
 import 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -14,6 +16,7 @@ import SummaryScreen from './app/screens/SummaryScreen';
 import TaskManager from './app/screens/TaskManager';
 import Question from './app/screens/QuestionScreen';
 import AdultScreen from './app/screens/AdultScreen';
+import HeaderLogo from './app/components/HeaderLogo';
 
 const Stack = createStackNavigator();
 
@@ -38,7 +41,7 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: 'Home' }}
+          options={{ title: 'Home', headerTitle: () => <HeaderLogo /> }}
         />
         <Stack.Screen
           name="Settings"

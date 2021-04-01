@@ -107,7 +107,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View>
-      <Text style={styles.main}>Home screen</Text>
+      {/* <Text style={styles.main}>Home screen</Text> */}
       <Button
         title="Profile"
         onPress={() => {
