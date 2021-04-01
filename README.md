@@ -1,6 +1,6 @@
-# Project Juniper
+<img src="./assets/logo-text.svg" alt="project logo" width="750">
 
-<img src="./assets/logo-background.svg" alt="project logo" width="100" height="100">
+<hr>
 
 Project created for third year at university.
 
