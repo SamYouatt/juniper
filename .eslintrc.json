@@ -28,6 +28,6 @@
         "no-plusplus": "off",
         "no-param-reassign": "off",
         "import/no-dynamic-require": "error",
-        "dot-notation": "warn"
+        "dot-notation": "off"
     }
 }

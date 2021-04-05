@@ -10,6 +10,9 @@ import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
 
+import { Colours } from '../../styles/Index';
+import IconButton from '../components/IconButton';
+
 export default function HomeScreen({ navigation }) {
   const [scheduledTasks, setScheduledTasks] = useState([]);
   const [unscheduledTasks, setUnscheduledTasks] = useState([]);
@@ -106,28 +109,18 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View>
-      {/* <Text style={styles.main}>Home screen</Text> */}
-      <Button
-        title="Profile"
-        onPress={() => {
-          navigation.navigate('Profile');
-        }}
-      />
+    <View style={styles.container}>
 
       <Text>Scheduled Tasks</Text>
 
       {scheduledTasks.length > 0
         ? scheduledTasks.map((task) => (
-          <>
-            <Text key={`empty${task.taskName}`}>{prettyDate(task.task.scheduled)}</Text>
-            <TaskWidget
-              fileName={task.taskName}
-              key={task.taskName}
-              task={task.task}
-              navigation={navigation}
-            />
-          </>
+          <TaskWidget
+            fileName={task.taskName}
+            key={task.taskName}
+            task={task.task}
+            navigation={navigation}
+          />
         ))
         : <Text>No scheduled tasks!</Text>}
 
@@ -145,7 +138,14 @@ export default function HomeScreen({ navigation }) {
         ))
         : <Text>No unscheduled tasks!</Text>}
 
-      <Button title="Adult area" onPress={enterAdultArea} />
+      <View style={styles.profile}>
+        <IconButton icon="award" text="Profile" buttonAction={() => navigation.navigate('Profile')} />
+      </View>
+
+      <View style={styles.adultarea}>
+        <IconButton icon="settings" text="Adult Area" buttonAction={enterAdultArea} />
+      </View>
+
       <Modal
         animationType="slide"
         transparent={false}
@@ -163,12 +163,22 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colours['main'].back,
     alignItems: 'center',
     justifyContent: 'center',
   },
   main: {
     fontFamily: 'OpenDyslexic',
     fontSize: 64,
+  },
+  adultarea: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+  profile: {
+    position: 'absolute',
+    top: 25,
+    right: 25,
   },
 });
