@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
 import { Feather } from '@expo/vector-icons';
 import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import { Colours, Spacing, Borders } from '../../styles/Index';
+import IconButton from './IconButton';
 
 export default function TaskWidget({
   fileName, task, navigation, scheduleTask,
@@ -38,7 +39,7 @@ export default function TaskWidget({
     const weekday = dt.weekdayLong;
     const month = dt.monthLong;
     const { day } = dt;
-    const time = dt.toLocaleString(DateTime.TIME_24_SIMPLE);
+    const time = dt.toLocaleString(DateTime.TIME_SIMPLE);
     const formatted = `${weekday}, ${day} ${month} at ${time}`;
 
     return formatted;
@@ -49,8 +50,10 @@ export default function TaskWidget({
 
       <View style={styles.left}>
         {task.scheduled
-          ? <Text>{prettyDate(task.scheduled)}</Text>
-          : <Button title="schedule" onPress={() => setDatePickerVisible(true)} />}
+          ? <Text style={styles.date}>{prettyDate(task.scheduled)}</Text>
+          : (
+            <IconButton icon="calendar" text="Schedule" buttonAction={() => setDatePickerVisible(true)} />
+          )}
       </View>
 
       <View style={styles.mid}>
@@ -91,13 +94,15 @@ export default function TaskWidget({
 
 const styles = StyleSheet.create({
   container: {
-    width: 1000,
+    width: 800,
     minHeight: 125,
     flexDirection: 'row',
   },
   left: {
     flex: 2,
     marginRight: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   mid: {
     flex: 8,
@@ -138,6 +143,10 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 18,
+    color: Colours['main'].altdark,
+  },
+  date: {
+    fontSize: 22,
     color: Colours['main'].altdark,
   },
 });

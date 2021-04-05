@@ -89,18 +89,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const prettyDate = (date) => {
-    const dt = DateTime.fromISO(date);
-
-    const weekday = dt.weekdayLong;
-    const month = dt.monthLong;
-    const { day } = dt;
-    const time = dt.toLocaleString(DateTime.TIME_24_SIMPLE);
-    const formatted = `${weekday}, ${day} ${month} at ${time}`;
-
-    return formatted;
-  };
-
   const scheduleTask = async (fileName, task, date) => {
     task.scheduled = date;
     const asString = JSON.stringify(task);
@@ -111,32 +99,38 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <Text>Scheduled Tasks</Text>
+      {scheduledTasks.length > 0 && (
+      <View style={styles.top}>
+        <Text style={styles.textheader}>Scheduled Tasks</Text>
+        {scheduledTasks.map((task) => (
+          <View style={styles.task} key={`view${task.taskName}`}>
+            <TaskWidget
+              fileName={task.taskName}
+              key={task.taskName}
+              task={task.task}
+              navigation={navigation}
+            />
+          </View>
+        ))}
+      </View>
+      )}
 
-      {scheduledTasks.length > 0
-        ? scheduledTasks.map((task) => (
-          <TaskWidget
-            fileName={task.taskName}
-            key={task.taskName}
-            task={task.task}
-            navigation={navigation}
-          />
-        ))
-        : <Text>No scheduled tasks!</Text>}
-
-      <Text>Unscheduled Tasks</Text>
-
-      {unscheduledTasks.length > 0
-        ? unscheduledTasks.map((task) => (
-          <TaskWidget
-            fileName={task.taskName}
-            key={task.taskName}
-            task={task.task}
-            navigation={navigation}
-            scheduleTask={scheduleTask}
-          />
-        ))
-        : <Text>No unscheduled tasks!</Text>}
+      {unscheduledTasks.length > 0 && (
+      <View style={styles.bottom}>
+        <Text style={styles.textheader}>Unscheduled Tasks</Text>
+        {unscheduledTasks.map((task) => (
+          <View style={styles.task} key={`view${task.taskName}`}>
+            <TaskWidget
+              fileName={task.taskName}
+              key={task.taskName}
+              task={task.task}
+              navigation={navigation}
+              scheduleTask={scheduleTask}
+            />
+          </View>
+        ))}
+      </View>
+      )}
 
       <View style={styles.profile}>
         <IconButton icon="award" text="Profile" buttonAction={() => navigation.navigate('Profile')} />
@@ -166,6 +160,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colours['main'].back,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 15,
+  },
+  top: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  bottom: {
+    flex: 1,
+    alignItems: 'center',
   },
   main: {
     fontFamily: 'OpenDyslexic',
@@ -180,5 +183,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 25,
     right: 25,
+  },
+  textheader: {
+    fontSize: 32,
+    color: Colours['main'].altdark,
+    marginBottom: 25,
+  },
+  task: {
+    marginBottom: 15,
   },
 });
