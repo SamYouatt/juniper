@@ -58,9 +58,11 @@ export default function TaskWidget({
 
       <View style={styles.mid}>
         <TouchableOpacity onPress={loadTask} underlayColor="white" style={styles.task}>
+          {Object.keys(SymbolsIndex).includes(task.image) && (
           <View style={styles.imagezone}>
             <Image source={SymbolsIndex[`${task.image}`].uri} style={styles.image} />
           </View>
+          )}
           <View style={styles.info}>
             <Text style={styles.title}>{task.name}</Text>
             <Text style={styles.details}>{`${task.questions.length} questions`}</Text>
@@ -128,6 +130,7 @@ const styles = StyleSheet.create({
   arrowzone: {
     flex: 1,
     justifyContent: 'center',
+    marginRight: 15,
   },
   image: {
     borderRadius: Borders.radius.mid,
