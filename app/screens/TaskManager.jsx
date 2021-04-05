@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, Button, Alert,
+  View, Text, Button, Alert, StyleSheet, FlatList, TouchableHighlight,
 } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import shorthash from 'shorthash';
 import { Validator } from 'jsonschema';
+import { Feather } from '@expo/vector-icons';
 import schema from '../../helpers/schema/TaskSchema';
 import TaskWidgetEditable from '../components/TaskWidgetEditable';
+import { Colours, Spacing, Borders } from '../../styles/Index';
 
 export default function TaskManager() {
   const [taskList, setTaskList] = useState([]);
@@ -85,14 +87,71 @@ export default function TaskManager() {
   };
 
   return (
-    <View>
-      <Text>Task Manager</Text>
-      <Button title="Select Document" onPress={importTask} />
-      {taskList.length > 0
-        ? taskList.map((fileName) => (
-          <TaskWidgetEditable fileName={fileName} key={fileName} />
-        ))
-        : <Text>Start importing tasks to see something here!</Text>}
+    <View style={styles.container}>
+      <View style={styles.top}>
+        <View style={styles.button}>
+          <TouchableHighlight onPress={importTask} underlayColor="white">
+            <View style={styles.buttonInner}>
+              <Feather name="folder" size={40} color={Colours['main'].altdark} />
+              <Text style={styles.buttonText}>Select Tasks to Import</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </View>
+
+      <View style={styles.bottom}>
+        <Text style={styles.header}>Imported Tasks</Text>
+        {taskList.length > 0
+          ? (
+            <FlatList
+              data={[...taskList]}
+              renderItem={({ item }) => (
+                <View style={styles.task}>
+                  <TaskWidgetEditable fileName={item} key={item} />
+                </View>
+              )}
+              keyExtractor={(item) => item.title}
+            />
+          )
+          : <Text>Start importing tasks to see something here!</Text>}
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colours['main'].back,
+    padding: 15,
+  },
+  top: {
+    justifyContent: 'center',
+  },
+  bottom: {
+    marginTop: Spacing.margin.large,
+    flex: 1,
+  },
+  task: {
+    marginBottom: 15,
+  },
+  header: {
+    fontSize: 32,
+    color: Colours['main'].altdark,
+    marginBottom: 25,
+    textAlign: 'center',
+  },
+  button: {
+    alignSelf: 'center',
+    backgroundColor: Colours['main'].mid,
+    padding: Spacing.padding.mid,
+    borderRadius: 15,
+  },
+  buttonInner: {
+    flexDirection: 'row',
+  },
+  buttonText: {
+    fontSize: 28,
+    marginLeft: Spacing.margin.mid,
+  },
+});
