@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 10,
-    marginLeft: 15,
+    marginLeft: 25,
     marginRight: 15,
     justifyContent: 'center',
   },

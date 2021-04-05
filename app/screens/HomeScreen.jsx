@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, Modal, Alert,
+  StyleSheet, Text, View, Button, Modal, Alert, FlatList,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -102,33 +102,41 @@ export default function HomeScreen({ navigation }) {
       {scheduledTasks.length > 0 && (
       <View style={styles.top}>
         <Text style={styles.textheader}>Scheduled Tasks</Text>
-        {scheduledTasks.map((task) => (
-          <View style={styles.task} key={`view${task.taskName}`}>
-            <TaskWidget
-              fileName={task.taskName}
-              key={task.taskName}
-              task={task.task}
-              navigation={navigation}
-            />
-          </View>
-        ))}
+        <FlatList
+          data={[...scheduledTasks]}
+          renderItem={({ item }) => (
+            <View style={styles.task} key={`view${item.taskName}`}>
+              <TaskWidget
+                fileName={item.taskName}
+                key={item.taskName}
+                task={item.task}
+                navigation={navigation}
+              />
+            </View>
+          )}
+          keyExtractor={(item) => `list${item.taskname}`}
+        />
       </View>
       )}
 
       {unscheduledTasks.length > 0 && (
       <View style={styles.bottom}>
         <Text style={styles.textheader}>Unscheduled Tasks</Text>
-        {unscheduledTasks.map((task) => (
-          <View style={styles.task} key={`view${task.taskName}`}>
-            <TaskWidget
-              fileName={task.taskName}
-              key={task.taskName}
-              task={task.task}
-              navigation={navigation}
-              scheduleTask={scheduleTask}
-            />
-          </View>
-        ))}
+        <FlatList
+          data={[...unscheduledTasks]}
+          renderItem={({ item }) => (
+            <View style={styles.task} key={`view${item.taskName}`}>
+              <TaskWidget
+                fileName={item.taskName}
+                key={item.taskName}
+                task={item.task}
+                navigation={navigation}
+                scheduleTask={scheduleTask}
+              />
+            </View>
+          )}
+          keyExtractor={(item) => item.title}
+        />
       </View>
       )}
 
