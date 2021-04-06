@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  StyleSheet, Text, View, Button, Modal, Alert, FlatList,
+  StyleSheet, Text, View, Button, Modal, Alert, FlatList, Settings,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -9,8 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
-
-import { Colours } from '../../styles/Index';
+import { SettingsContext } from '../config/SettingsContext';
+import { Colours, Spacing } from '../../styles/Index';
 import IconButton from '../components/IconButton';
 
 export default function HomeScreen({ navigation }) {
@@ -18,6 +18,7 @@ export default function HomeScreen({ navigation }) {
   const [unscheduledTasks, setUnscheduledTasks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const focus = useIsFocused();
+  const [settings, setSettings] = useContext(SettingsContext);
 
   useEffect(() => {
     if (focus) {
@@ -29,6 +30,10 @@ export default function HomeScreen({ navigation }) {
     setUnscheduledTasks([]);
     setScheduledTasks([]);
     loadTasks();
+  };
+
+  const loadSettings = async () => {
+    const font = await AsyncStorage.getItem('font-family') ?? 'Helvetica';
   };
 
   const loadTasks = async () => {
@@ -114,7 +119,7 @@ export default function HomeScreen({ navigation }) {
               />
             </View>
           )}
-          keyExtractor={(item) => `list${item.taskname}`}
+          keyExtractor={(item) => `list${item.task.name}`}
         />
       </View>
       )}
@@ -135,7 +140,7 @@ export default function HomeScreen({ navigation }) {
               />
             </View>
           )}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => `list${item.task.name}`}
         />
       </View>
       )}
@@ -147,6 +152,13 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.adultarea}>
         <IconButton icon="settings" text="Adult Area" buttonAction={enterAdultArea} />
       </View>
+
+      <Button
+        title="Test"
+        onPress={() => {
+          console.log(settings);
+        }}
+      />
 
       <Modal
         animationType="slide"
@@ -177,10 +189,7 @@ const styles = StyleSheet.create({
   bottom: {
     flex: 1,
     alignItems: 'center',
-  },
-  main: {
-    fontFamily: 'OpenDyslexic',
-    fontSize: 64,
+    marginTop: Spacing.margin.mid,
   },
   adultarea: {
     position: 'absolute',
