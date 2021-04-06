@@ -17,7 +17,7 @@ export default function TaskWidget({
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [date, setDate] = useState();
-  const [settings, setSettings] = useContext(SettingsContext);
+  const [settings] = useContext(SettingsContext);
 
   const loadTask = () => {
     navigation.navigate('Question', { task, fileName });

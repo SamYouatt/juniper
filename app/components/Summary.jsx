@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 48,
     fontWeight: 'bold',
+    marginTop: Spacing.margin.small,
     // color: Colours['main'].altdark,
   },
 });
