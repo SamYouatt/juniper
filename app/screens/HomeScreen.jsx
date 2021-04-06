@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    // backgroundColor: Colours[settings.theme].back,
     padding: 15,
   },
   top: {
@@ -206,6 +207,7 @@ const styles = StyleSheet.create({
   textheader: {
     fontSize: 32,
     marginBottom: 25,
+    // color: Colours[settings.theme].altdark,
   },
   task: {
     marginBottom: 15,

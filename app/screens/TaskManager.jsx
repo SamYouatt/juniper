@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View, Text, Button, Alert, StyleSheet, FlatList, TouchableHighlight,
 } from 'react-native';
@@ -10,9 +10,11 @@ import { Feather } from '@expo/vector-icons';
 import schema from '../../helpers/schema/TaskSchema';
 import TaskWidgetEditable from '../components/TaskWidgetEditable';
 import { Colours, Spacing, Borders } from '../../styles/Index';
+import { SettingsContext } from '../config/SettingsContext';
 
 export default function TaskManager() {
   const [taskList, setTaskList] = useState([]);
+  const [settings, setSettings] = useContext(SettingsContext);
 
   useEffect(() => {
     showDirectory();
@@ -87,9 +89,9 @@ export default function TaskManager() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
       <View style={styles.top}>
-        <View style={styles.button}>
+        <View style={[styles.button, { backgroundColor: Colours[settings.theme].mid }]}>
           <TouchableHighlight onPress={importTask} underlayColor="white">
             <View style={styles.buttonInner}>
               <Feather name="folder" size={40} color={Colours['main'].altdark} />
@@ -100,7 +102,9 @@ export default function TaskManager() {
       </View>
 
       <View style={styles.bottom}>
-        <Text style={styles.header}>Imported Tasks</Text>
+        <Text style={[styles.header, { color: Colours[settings.theme].altdark }]}>
+          Imported Tasks
+        </Text>
         {taskList.length > 0
           ? (
             <FlatList
@@ -121,8 +125,8 @@ export default function TaskManager() {
 
 const styles = StyleSheet.create({
   container: {
+    // backgroundColor: Colours[main].back,
     flex: 1,
-    backgroundColor: Colours['main'].back,
     padding: 15,
   },
   top: {
@@ -136,14 +140,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header: {
+    // color: Colours['main'].altdark,
     fontSize: 32,
-    color: Colours['main'].altdark,
     marginBottom: 25,
     textAlign: 'center',
   },
   button: {
+    // backgroundColor: Colours[main].mid,
     alignSelf: 'center',
-    backgroundColor: Colours['main'].mid,
     padding: Spacing.padding.mid,
     borderRadius: 15,
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import * as FileSystem from 'expo-file-system';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
@@ -8,12 +8,14 @@ import { DateTime } from 'luxon';
 import { Colours, Spacing, Borders } from '../../styles/Index';
 import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import IconButtonBelow from './IconButtonBelow';
+import { SettingsContext } from '../config/SettingsContext';
 
 export default function TaskWidgetEditable({ fileName }) {
   const [task, setTask] = useState(null);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [date, setDate] = useState();
+  const [settings] = useContext(SettingsContext);
   const filePath = `${FileSystem.documentDirectory}tasks/${fileName}`;
 
   useEffect(() => {
@@ -93,17 +95,16 @@ export default function TaskWidgetEditable({ fileName }) {
     <View style={styles.container}>
       {task
         ? (
-          <View style={styles.card}>
+          <View style={[styles.card, { backgroundColor: Colours[settings.theme].mid }]}>
             {Object.keys(SymbolsIndex).includes(task.image) && (
             <View style={styles.imagezone}>
               <Image source={SymbolsIndex[`${task.image}`].uri} style={styles.image} />
             </View>
             )}
-            {/* <View style={styles.imagezone}>
-              <Image source={SymbolsIndex[`${task.image}`].uri} style={styles.image} />
-            </View> */}
             <View style={styles.info}>
-              <Text style={styles.title}>{task.name}</Text>
+              <Text style={[styles.title, { color: Colours[settings.theme].text }]}>
+                {task.name}
+              </Text>
               <Text style={styles.details}>{`${task.questions.length} questions`}</Text>
               <Text style={styles.details}>{`${task.scheduled ? `Scheduled: ${prettyDate(task.scheduled)}` : 'Not scheduled'}`}</Text>
               <Text style={styles.details}>{`Completed: ${task.completed ? prettyDate(task.dateCompleted) : 'No'}`}</Text>
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    backgroundColor: Colours['main'].mid,
+    // backgroundColor: Colours['main'].mid,
     borderRadius: Borders.radius.mid,
     padding: Spacing.padding.mid,
     flexDirection: 'row',
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: Colours['main'].text,
+    // color: Colours['main'].text,
     fontWeight: 'bold',
     marginBottom: Spacing.margin.small,
   },

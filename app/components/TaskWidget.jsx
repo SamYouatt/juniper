@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import {
-  View, Text, TouchableOpacity, Button, StyleSheet, Image,
+  View, Text, TouchableOpacity, Button, StyleSheet, Image, Settings,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { DateTime } from 'luxon';
@@ -9,6 +9,7 @@ import { Feather } from '@expo/vector-icons';
 import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import { Colours, Spacing, Borders } from '../../styles/Index';
 import IconButton from './IconButton';
+import { SettingsContext } from '../config/SettingsContext';
 
 export default function TaskWidget({
   fileName, task, navigation, scheduleTask,
@@ -16,6 +17,7 @@ export default function TaskWidget({
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [date, setDate] = useState();
+  const [settings, setSettings] = useContext(SettingsContext);
 
   const loadTask = () => {
     navigation.navigate('Question', { task, fileName });
@@ -50,23 +52,23 @@ export default function TaskWidget({
 
       <View style={styles.left}>
         {task.scheduled
-          ? <Text style={styles.date}>{prettyDate(task.scheduled)}</Text>
+          ? <Text style={[styles.date, { color: Colours[settings.theme].altdark }]}>{prettyDate(task.scheduled)}</Text>
           : (
             <IconButton icon="calendar" text="Schedule" buttonAction={() => setDatePickerVisible(true)} />
           )}
       </View>
 
       <View style={styles.mid}>
-        <TouchableOpacity onPress={loadTask} underlayColor="white" style={styles.task}>
+        <TouchableOpacity onPress={loadTask} underlayColor="white" style={[styles.task, { backgroundColor: Colours[settings.theme].mid }]}>
           {Object.keys(SymbolsIndex).includes(task.image) && (
           <View style={styles.imagezone}>
             <Image source={SymbolsIndex[`${task.image}`].uri} style={styles.image} />
           </View>
           )}
           <View style={styles.info}>
-            <Text style={styles.title}>{task.name}</Text>
-            <Text style={styles.details}>{`${task.questions.length} questions`}</Text>
-            <Text style={styles.details}>{`${task.time} minutes`}</Text>
+            <Text style={[styles.title, { color: Colours[settings.theme].text }]}>{task.name}</Text>
+            <Text style={[styles.details, { color: Colours[settings.theme].altdark }]}>{`${task.questions.length} questions`}</Text>
+            <Text style={[styles.details, { color: Colours[settings.theme].altdark }]}>{`${task.time} minutes`}</Text>
           </View>
           <View style={styles.arrowzone}>
             <Feather name="arrow-right" size={48} color={Colours['main'].altdark} />
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
   },
   task: {
     flex: 1,
-    backgroundColor: Colours['main'].mid,
+    // backgroundColor: Colours[settings.theme].mid,
     borderRadius: Borders.radius.mid,
     padding: Spacing.padding.mid,
     flexDirection: 'row',
@@ -139,17 +141,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    color: Colours['main'].text,
+    // color: Colours[settings.theme].text,
     fontWeight: 'bold',
     letterSpacing: 1,
     marginBottom: 5,
   },
   details: {
     fontSize: 18,
-    color: Colours['main'].altdark,
+    // color: Colours[settings.theme].altdark,
   },
   date: {
     fontSize: 22,
-    color: Colours['main'].altdark,
+    // color: Colours[settings.theme].altdark,
   },
 });
