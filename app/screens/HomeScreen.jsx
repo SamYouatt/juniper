@@ -102,11 +102,12 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
       {scheduledTasks.length > 0 && (
       <View style={styles.top}>
-        <Text style={styles.textheader}>Scheduled Tasks</Text>
+        <Text style={[styles.textheader, { color: Colours[settings.theme].altdark }]}>
+          Scheduled Tasks
+        </Text>
         <FlatList
           data={[...scheduledTasks]}
           renderItem={({ item }) => (
@@ -126,7 +127,9 @@ export default function HomeScreen({ navigation }) {
 
       {unscheduledTasks.length > 0 && (
       <View style={styles.bottom}>
-        <Text style={styles.textheader}>Unscheduled Tasks</Text>
+        <Text style={[styles.textheader, { color: Colours[settings.theme].altdark }]}>
+          Unscheduled Tasks
+        </Text>
         <FlatList
           data={[...unscheduledTasks]}
           renderItem={({ item }) => (
@@ -177,7 +180,6 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colours['main'].back,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
@@ -203,7 +205,6 @@ const styles = StyleSheet.create({
   },
   textheader: {
     fontSize: 32,
-    color: Colours['main'].altdark,
     marginBottom: 25,
   },
   task: {
