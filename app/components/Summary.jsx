@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
-import { View, Text, Button } from 'react-native';
+import {
+  View, Text, Button, StyleSheet,
+} from 'react-native';
+import { Colours, Borders, Spacing } from '../../styles/Index';
+import { SettingsContext } from '../config/SettingsContext';
 
 export default function Summary({ tasks }) {
   const [dayList, setDayList] = useState([]);
   const [weekList, setWeekList] = useState([]);
   const [monthList, setMonthList] = useState([]);
+  const [settings] = useContext(SettingsContext);
 
   useEffect(() => {
-    console.log(`at start: ${tasks}`);
     tasks.map((task) => putInLists(task));
   }, []);
 
@@ -34,31 +38,57 @@ export default function Summary({ tasks }) {
   };
 
   return (
-    <View>
-      {dayList.length > 0 ? (
-        <Text>
-          Tasks completed today:
-          {' '}
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].altlight }]}>
+      <View style={[styles.period, { backgroundColor: Colours[settings.theme].mid }]}>
+        <Text style={[styles.value, { color: Colours[settings.theme].altdark }]}>
           {dayList.length}
         </Text>
-      )
-        : <Text>No tasks completed today</Text>}
-      {weekList.length > 0 ? (
-        <Text>
-          Tasks completed this week:
-          {' '}
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>Day</Text>
+      </View>
+      <View style={[styles.period, { backgroundColor: Colours[settings.theme].mid }]}>
+        <Text style={[styles.value, { color: Colours[settings.theme].altdark }]}>
           {weekList.length}
         </Text>
-      )
-        : <Text>No tasks completed this week</Text>}
-      {monthList.length > 0 ? (
-        <Text>
-          Tasks completed this month:
-          {' '}
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>Week</Text>
+      </View>
+      <View style={[styles.period, { backgroundColor: Colours[settings.theme].mid }]}>
+        <Text style={[styles.value, { color: Colours[settings.theme].altdark }]}>
           {monthList.length}
         </Text>
-      )
-        : <Text>No tasks completed this month</Text>}
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>Month</Text>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    // backgroundColor: Colours['main'].altlight,
+    width: '40%',
+    height: 125,
+    borderRadius: Borders.radius.mid,
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  period: {
+    // backgroundColor: Colours['main'].mid,
+    borderRadius: Borders.radius.mid,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    padding: Spacing.padding.small,
+    margin: Spacing.margin.small,
+  },
+  text: {
+    fontSize: 20,
+    marginBottom: Spacing.margin.small,
+    // color: Colours['main'].altdark,
+  },
+  value: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    // color: Colours['main'].altdark,
+  },
+});
