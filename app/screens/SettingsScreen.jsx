@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Modal, Alert,
+  View, Text, Button, Modal, Alert, StyleSheet,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 import PinCode from '../components/PinCode';
+import IconButton from '../components/IconButton';
 import { SettingsContext } from '../config/SettingsContext';
+import { Colours, Spacing, Borders } from '../../styles/Index';
 
 export default function SettingsScreen() {
   const [fontFamily, setFontFamily] = useState('Helvetica');
@@ -89,80 +91,95 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View>
-      {pin
-        ? <Button title="Change pin" onPress={changePin} />
-        : <Button title="Add pin" onPress={addPin} />}
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
+      <View style={styles.pinbuttons}>
+        {!pin && <IconButton icon="lock" buttonAction={addPin} text="Add Pin" />}
+        {pin && <IconButton icon="unlock" buttonAction={deletePin} text="Remove Pin" />}
+        {pin && <IconButton icon="lock" buttonAction={changePin} text="Change Pin" />}
+      </View>
 
-      <Button title="delete pin" onPress={deletePin} />
-      <Button title="test" onPress={() => console.log(pin)} />
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>Font:</Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={fontFamily}
+            onValueChange={(itemValue) => {
+              storeData('fontFamily', itemValue);
+              setFontFamily(itemValue);
+            }}
+            mode="dropdown"
+            style={styles.picker}
+          >
+            <Picker.Item label="Helvetica" value="Helvetica" color={Colours[settings.theme].text} />
+            <Picker.Item label="Comic Sans" value="ComicSans" color={Colours[settings.theme].text} />
+            <Picker.Item label="Garamond" value="Garamond" color={Colours[settings.theme].text} />
+            <Picker.Item label="OpenDyslexic" value="OpenDyslexic" color={Colours[settings.theme].text} />
+          </Picker>
+        </View>
+      </View>
 
-      <Text>Text Settings</Text>
-      <Text>Font</Text>
-      <DropDownPicker
-        items={[
-          { label: 'Sans-Serif', value: 'sans-serif', untouchable: true },
-          { label: 'Helvetica', value: 'Helvetica', parent: 'sans-serif' },
-          { label: 'Comic Sans', value: 'ComicSans', parent: 'sans-serif' },
-          { label: 'Serif', value: 'serif', untouchable: true },
-          { label: 'Garamond', value: 'Garamond', parent: 'serif' },
-          { label: 'Dyslexic Friendly', value: 'dyslexic', untouchable: true },
-          { label: 'OpenDyslexic', value: 'OpenDyslexic', parent: 'dyslexic' },
-        ]}
-        defaultValue={fontFamily}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'center' }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => storeData('fontFamily', item.value)}
-      />
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>
+          Font Size:
+        </Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={fontSize}
+            onValueChange={(itemValue) => {
+              storeData('fontSize', itemValue);
+              setFontSize(itemValue);
+            }}
+            mode="dropdown"
+            style={styles.picker}
+          >
+            <Picker.Item label="Small" value="0.8" color={Colours[settings.theme].text} />
+            <Picker.Item label="Medium" value="1.0" color={Colours[settings.theme].text} />
+            <Picker.Item label="Large" value="1.2" color={Colours[settings.theme].text} />
+          </Picker>
+        </View>
+      </View>
 
-      <Text>Font Size</Text>
-      <DropDownPicker
-        items={[
-          { label: 'small', value: '0.8' },
-          { label: 'medium', value: '1' },
-          { label: 'large', value: '1.2' },
-        ]}
-        defaultValue={fontSize}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'flex-start' }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => storeData('fontSize', item.value)}
-      />
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>
+          Letter Spacing:
+        </Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={fontSpacing}
+            onValueChange={(itemValue) => {
+              storeData('fontSpacing', itemValue);
+              setFontSpacing(itemValue);
+            }}
+            mode="dropdown"
+            style={styles.picker}
+          >
+            <Picker.Item label="Small" value="0.8" color={Colours[settings.theme].text} />
+            <Picker.Item label="Medium" value="1.0" color={Colours[settings.theme].text} />
+            <Picker.Item label="Large" value="1.2" color={Colours[settings.theme].text} />
+          </Picker>
+        </View>
+      </View>
 
-      <Text>Letter Spacing</Text>
-      <DropDownPicker
-        items={[
-          { label: 'small', value: '0.8' },
-          { label: 'medium', value: '1' },
-          { label: 'large', value: '1.2' },
-        ]}
-        defaultValue={fontSpacing}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'flex-start' }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => storeData('fontSpacing', item.value)}
-      />
-
-      <Text>Theme</Text>
-      <DropDownPicker
-        items={[
-          { label: 'Default', value: 'main' },
-          { label: 'Ocean', value: 'ocean' },
-          { label: 'Peppermint', value: 'peppermint' },
-          { label: 'Dyslexia Sepia', value: 'dyslexia-sepia' },
-          { label: 'Dyslexia Peach', value: 'dyslexia-peach' },
-        ]}
-        defaultValue={theme}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'flex-start' }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => storeData('theme', item.value)}
-      />
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>Theme:</Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={theme}
+            onValueChange={(itemValue) => {
+              storeData('theme', itemValue);
+              setTheme(itemValue);
+            }}
+            mode="dropdown"
+            style={styles.picker}
+          >
+            <Picker.Item label="Default" value="main" color={Colours[settings.theme].text} />
+            <Picker.Item label="Ocean" value="ocean" color={Colours[settings.theme].text} />
+            <Picker.Item label="Peppermint" value="peppermint" color={Colours[settings.theme].text} />
+            <Picker.Item label="Dyslexia Sepia" value="dyslexia-sepia" color={Colours[settings.theme].text} />
+            <Picker.Item label="Dyslexia Peach" value="dyslexia-peach" color={Colours[settings.theme].text} />
+          </Picker>
+        </View>
+      </View>
 
       <Modal
         animationType="slide"
@@ -178,3 +195,35 @@ export default function SettingsScreen() {
 
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: Spacing.padding.mid,
+    // backgroundColor: Colours['main'].back,
+  },
+  pinbuttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: Spacing.margin.large,
+  },
+  setting: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
+  },
+  settingname: {
+    flex: 1,
+    textAlign: 'right',
+    marginRight: Spacing.margin.large,
+    fontSize: 24,
+    // color: Colours['main'].altdark,
+  },
+  pickercontainer: {
+    flex: 4,
+    // backgroundColor: Colours['main'].mid,
+    borderRadius: Borders.radius.small,
+    marginRight: Spacing.margin.large,
+  },
+});
