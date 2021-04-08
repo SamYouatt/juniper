@@ -10,7 +10,7 @@ import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
 import { SettingsContext } from '../config/SettingsContext';
-import { Colours, Spacing } from '../../styles/Index';
+import { Colours, Spacing, Borders } from '../../styles/Index';
 import IconButton from '../components/IconButton';
 
 export default function HomeScreen({ navigation }) {
@@ -165,13 +165,15 @@ export default function HomeScreen({ navigation }) {
 
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Text>Enter pincode</Text>
-        <PinCode onSubmit={pinCheck} />
-        <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+        <View style={styles.outer}>
+          <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
+            <PinCode onSubmit={pinCheck} dismissAction={() => setModalVisible(false)} />
+          </View>
+        </View>
       </Modal>
     </View>
   );
@@ -211,5 +213,20 @@ const styles = StyleSheet.create({
   },
   task: {
     marginBottom: 15,
+  },
+  outer: {
+    flex: 1,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalcontent: {
+    width: '25%',
+    height: '70%',
+    // backgroundColor: Colours['main'].back,
+    borderRadius: Borders.radius.large,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
   },
 });

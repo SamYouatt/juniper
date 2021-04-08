@@ -183,13 +183,15 @@ export default function SettingsScreen() {
 
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Text>Enter pincode</Text>
-        <PinCode onSubmit={pinSubmitted} />
-        <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+        <View style={styles.outer}>
+          <View style={styles.modalcontent}>
+            <PinCode onSubmit={pinSubmitted} dismissAction={() => setModalVisible(false)} />
+          </View>
+        </View>
       </Modal>
     </View>
 
@@ -200,11 +202,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: Spacing.padding.mid,
+    alignItems: 'center',
     // backgroundColor: Colours['main'].back,
   },
   pinbuttons: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    width: '50%',
+    justifyContent: 'space-evenly',
     marginBottom: Spacing.margin.large,
   },
   setting: {
@@ -225,5 +229,20 @@ const styles = StyleSheet.create({
     // backgroundColor: Colours['main'].mid,
     borderRadius: Borders.radius.small,
     marginRight: Spacing.margin.large,
+  },
+  outer: {
+    flex: 1,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalcontent: {
+    width: '25%',
+    height: '70%',
+    backgroundColor: Colours['main'].back,
+    borderRadius: Borders.radius.large,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
   },
 });
