@@ -20,6 +20,7 @@ export default function Question({ route, navigation }) {
   const [rewardModalVisible, setRewardModalVisible] = useState(false);
   const [unlockedReward, setUnlockedReward] = useState();
   const [settings] = useContext(SettingsContext);
+  const [firstGuess, setFirstGuess] = useState(true);
 
   const { task } = route.params;
   const { fileName } = route.params;
@@ -33,6 +34,12 @@ export default function Question({ route, navigation }) {
     navigation.setOptions({ title: task !== null ? task.name : 'Task' });
   }, [task]);
 
+  useEffect(() => {
+    if (score !== 0) {
+      nextQuestion();
+    }
+  }, [score]);
+
   const nextQuestion = () => {
     if (current + 1 < numQuestions) {
       setCurrent(current + 1);
@@ -42,11 +49,17 @@ export default function Question({ route, navigation }) {
   };
 
   const rightAnswer = () => {
-    setScore(score + 1);
-    nextQuestion();
+    if (firstGuess) {
+      setScore((prevState) => prevState + 1);
+    } else {
+      nextQuestion();
+    }
+    setFirstGuess(true);
   };
 
   const wrongAnswer = () => {
+    setFirstGuess(false);
+    setScore(score);
     Alert.alert(null, "That's not quite right");
   };
 
