@@ -196,6 +196,7 @@ export default function ProfileScreen() {
               style={[styles.textbox, { backgroundColor: Colours['main'].mid, color: Colours['main'].text }]}
             />
             <View style={styles.savebutton}>
+              <IconButton icon="x" text="Cancel" buttonAction={() => { setDescriptionModal(false); setTempDescription(description); }} />
               <IconButton icon="save" text="Save" buttonAction={() => setDescriptionPref(tempDescription)} />
             </View>
           </View>
@@ -277,7 +278,7 @@ const styles = StyleSheet.create({
     padding: Spacing.padding.large,
   },
   textbox: {
-    flex: 3,
+    flex: 7,
     fontSize: 28,
     // backgroundColor: Colours['main'].mid,
     borderRadius: Borders.radius.mid,
@@ -287,7 +288,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   savebutton: {
-    flex: 1,
+    flex: 2,
+    width: '40%',
     marginTop: Spacing.margin.large,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
