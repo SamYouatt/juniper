@@ -88,13 +88,15 @@ const styles = StyleSheet.create({
   },
   line: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    paddingLeft: Spacing.padding.small,
+    paddingRight: Spacing.padding.small,
   },
   header: {
     // color: Colours['main'].altdark,
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: Spacing.margin.small,
+    marginBottom: Spacing.margin.mid,
   },
   text: {
     // color: Colours['main'].altdark,
