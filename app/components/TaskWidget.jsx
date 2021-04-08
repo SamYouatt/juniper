@@ -52,13 +52,17 @@ export default function TaskWidget({
 
       <View style={styles.left}>
         {task.scheduled
-          ? <Text style={[styles.date, { color: Colours[settings.theme].altdark }]}>{prettyDate(task.scheduled)}</Text>
+          ? (
+            <Text style={[styles.date, { color: Colours[settings.theme].altdark }]}>
+              {prettyDate(task.scheduled)}
+            </Text>
+          )
           : (
             <IconButton icon="calendar" text="Schedule" buttonAction={() => setDatePickerVisible(true)} />
           )}
       </View>
 
-      <View style={styles.mid}>
+      <View style={[styles.mid, { backgroundColor: Colours[settings.theme].mid }]}>
         <TouchableOpacity onPress={loadTask} underlayColor="white" style={[styles.task, { backgroundColor: Colours[settings.theme].mid }]}>
           {Object.keys(SymbolsIndex).includes(task.image) && (
           <View style={styles.imagezone}>
@@ -110,6 +114,8 @@ const styles = StyleSheet.create({
   },
   mid: {
     flex: 8,
+    backgroundColor: Colours['main'].mid,
+    borderRadius: Borders.radius.mid,
   },
   task: {
     flex: 1,
