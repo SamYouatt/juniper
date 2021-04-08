@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Modal, TextInput,
+  View, Text, Button, Modal, TextInput, StyleSheet, ImageBackground, Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
 import ProfileAccolade from '../components/ProfileAccolade';
 import UnlocksPicker from '../components/UnlocksPicker';
+import IconButton from '../components/IconButton';
+import { Colours, Spacing, Borders } from '../../styles/Index';
+import { SettingsContext } from '../config/SettingsContext';
 
 const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
@@ -24,6 +27,8 @@ export default function ProfileScreen() {
   const [descriptionModal, setDescriptionModal] = useState(false);
 
   const [completedTasks, setCompletedTasks] = useState([]);
+
+  const [settings] = useContext(SettingsContext);
 
   const unlockedListPath = `${FileSystem.documentDirectory}unlocks/unlockedList`;
   const tasksDir = `${FileSystem.documentDirectory}tasks`;
@@ -126,16 +131,38 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View>
-      <Text>{chosenBackground}</Text>
-      <Text>{chosenAvatar}</Text>
-      <Text>{description}</Text>
+    <View style={[styles.container, { backgroundColor: Colours['main'].back }]}>
+      <View style={styles.top}>
+        <ImageBackground
+          source={UnlockablesIndex[chosenBackground].uri}
+          style={[styles.background, { borderBottomColor: Colours['main'].mid }]}
+        >
+          <View style={[styles.avatarzone, { backgroundColor: Colours['main'].mid }]}>
+            <Image source={UnlockablesIndex[chosenAvatar].uri} style={styles.avatar} />
+          </View>
+          <View style={styles.accolade}>
+            {completedTasks.length > 0 && <ProfileAccolade tasks={completedTasks} />}
+          </View>
+        </ImageBackground>
+      </View>
 
-      <Button title="Choose background" onPress={() => setBackgroundModal(true)} />
-      <Button title="Choose avatar" onPress={() => setAvatarModal(true)} />
-      <Button title="Change Decsription" onPress={() => setDescriptionModal(true)} />
+      <View style={styles.bottom}>
+        <View style={styles.left}>
+          <Text style={[styles.description, { color: Colours['main'].altdark }]}>{description}</Text>
+        </View>
+        <View style={styles.buttons}>
+          <View style={styles.button}>
+            <IconButton icon="image" text="Choose Background" buttonAction={() => setBackgroundModal(true)} />
+          </View>
+          <View style={styles.button}>
+            <IconButton icon="user" text="Choose Avatar" buttonAction={() => setAvatarModal(true)} />
+          </View>
+          <View style={styles.button}>
+            <IconButton icon="edit" text="Change Description" buttonAction={() => setDescriptionModal(true)} />
+          </View>
+        </View>
 
-      {completedTasks.length > 0 && <ProfileAccolade tasks={completedTasks} />}
+      </View>
 
       <UnlocksPicker
         visible={backgroundModal}
@@ -153,18 +180,109 @@ export default function ProfileScreen() {
         setVisible={setAvatarModal}
       />
 
-      <Modal animationType="slide" visible={descriptionModal} transparent={false} onRequestClose={() => setDescriptionModal(false)}>
-        <Text>Description editor</Text>
-        <TextInput
-          multiline={false}
-          maxLength={250}
-          defaultValue={description}
-          onSubmitEditing={(value) => setDescription(value)}
-          onChangeText={(value) => setTempDescription(value)}
-        />
-        <Button title="Submit" onPress={() => setDescriptionPref(tempDescription)} />
+      <Modal animationType="slide" visible={descriptionModal} transparent onRequestClose={() => setDescriptionModal(false)}>
+        <View style={styles.outer}>
+          <View style={[styles.modalcontent, { backgroundColor: Colours['main'].back }]}>
+            <TextInput
+              multiline
+              maxLength={250}
+              defaultValue={description}
+              onSubmitEditing={(value) => setDescription(value)}
+              onChangeText={(value) => setTempDescription(value)}
+              style={[styles.textbox, { backgroundColor: Colours['main'].mid, color: Colours['main'].text }]}
+            />
+            <View style={styles.savebutton}>
+              <IconButton icon="save" text="Save" buttonAction={() => setDescriptionPref(tempDescription)} />
+            </View>
+          </View>
+        </View>
       </Modal>
 
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // backgroundColor: Colours['main'].back,
+  },
+  top: {
+    flex: 4,
+  },
+  background: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+    // borderBottomColor: Colours['main'].mid,
+    borderBottomWidth: 10,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  avatarzone: {
+    height: 300,
+    width: 300,
+    marginBottom: Spacing.margin.mid,
+    borderRadius: 90,
+    // backgroundColor: Colours['main'].mid,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatar: {
+    height: '95%',
+    width: '95%',
+    resizeMode: 'contain',
+    borderRadius: Borders.radius.mid,
+  },
+  accolade: {
+    position: 'absolute',
+    bottom: 15,
+    left: 15,
+  },
+  bottom: {
+    flex: 2,
+    flexDirection: 'row',
+    padding: Spacing.padding.mid,
+  },
+  left: {
+    flex: 7,
+  },
+  buttons: {
+    flex: 2,
+    justifyContent: 'space-around',
+  },
+  description: {
+    fontSize: 32,
+    padding: Spacing.padding.mid,
+    // color: Colours['main'].altdark,
+    lineHeight: 50,
+  },
+  outer: {
+    flex: 1,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalcontent: {
+    width: '75%',
+    height: 400,
+    // backgroundColor: Colours['main'].back,
+    borderRadius: Borders.radius.large,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: Spacing.padding.large,
+  },
+  textbox: {
+    flex: 3,
+    fontSize: 28,
+    // backgroundColor: Colours['main'].mid,
+    borderRadius: Borders.radius.mid,
+    padding: Spacing.padding.large,
+    // color: Colours['main'].text,
+    lineHeight: 40,
+  },
+  savebutton: {
+    flex: 1,
+    marginTop: Spacing.margin.large,
+  },
+});
