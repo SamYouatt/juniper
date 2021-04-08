@@ -17,7 +17,7 @@ export default function ProfileScreen() {
   const [chosenBackground, setChosenBackground] = useState('sunny');
   const [chosenAvatar, setChosenAvatar] = useState('boy1');
   const [description, setDescription] = useState('Create a description for your profile!');
-  const [tempDescription, setTempDescription] = useState();
+  const [tempDescription, setTempDescription] = useState(description);
 
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([]);
   const [unlockedAvatars, setUnlockedAvatars] = useState([]);
@@ -37,6 +37,10 @@ export default function ProfileScreen() {
     update();
     loadTasks();
   }, []);
+
+  useEffect(() => {
+    setTempDescription(description);
+  }, [description]);
 
   const update = () => {
     loadPreferences();
