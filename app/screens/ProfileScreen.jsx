@@ -284,6 +284,7 @@ const styles = StyleSheet.create({
     padding: Spacing.padding.large,
     // color: Colours['main'].text,
     lineHeight: 40,
+    width: '100%',
   },
   savebutton: {
     flex: 1,
