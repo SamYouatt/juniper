@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, Button } from 'react-native';
+import {
+  View, Text, Button, StyleSheet,
+} from 'react-native';
+import { Colours, Spacing, Borders } from '../../styles/Index';
+import { SettingsContext } from '../config/SettingsContext';
 
 export default function ProfileAccolade({ tasks }) {
   const [dayList, setDayList] = useState([]);
   const [weekList, setWeekList] = useState([]);
   const [monthList, setMonthList] = useState([]);
+  const [settings] = useContext(SettingsContext);
 
   useEffect(() => {
-    console.log(`at start: ${tasks}`);
     tasks.map((task) => putInLists(task));
   }, [tasks]);
 
@@ -34,31 +38,66 @@ export default function ProfileAccolade({ tasks }) {
   };
 
   return (
-    <View>
-      {dayList.length > 0 ? (
-        <Text>
-          Tasks completed today:
-          {' '}
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].mid }]}>
+      <Text style={[styles.header, { color: Colours[settings.theme].altdark }]}>
+        Tasks completed:
+      </Text>
+
+      <View style={styles.line}>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+          Today:
+        </Text>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
           {dayList.length}
         </Text>
-      )
-        : <Text>No tasks completed today</Text>}
-      {weekList.length > 0 ? (
-        <Text>
-          Tasks completed this week:
-          {' '}
+      </View>
+      <View style={styles.line}>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+          Week:
+        </Text>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
           {weekList.length}
         </Text>
-      )
-        : <Text>No tasks completed this week</Text>}
-      {monthList.length > 0 ? (
-        <Text>
-          Tasks completed this month:
-          {' '}
+      </View>
+      <View style={styles.line}>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+          Month:
+        </Text>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
           {monthList.length}
         </Text>
-      )
-        : <Text>No tasks completed this month</Text>}
+      </View>
+      <View style={styles.line}>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+          Total:
+        </Text>
+        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+          {tasks.length}
+        </Text>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // backgroundColor: Colours['main'].mid,
+    padding: Spacing.padding.large,
+    borderRadius: Borders.radius.mid,
+  },
+  line: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  header: {
+    // color: Colours['main'].altdark,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: Spacing.margin.small,
+  },
+  text: {
+    // color: Colours['main'].altdark,
+    fontSize: 24,
+  },
+});
