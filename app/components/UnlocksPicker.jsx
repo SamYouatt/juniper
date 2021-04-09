@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  View, Text, Modal, Button, ScrollView, StyleSheet,
+  View, Text, Modal, ScrollView, StyleSheet,
 } from 'react-native';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
 import Reward from './Reward';

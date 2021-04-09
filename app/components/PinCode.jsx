@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import {
-  View, Text, Button, StyleSheet, Settings,
+  View, Text, StyleSheet,
 } from 'react-native';
 import { Colours, Spacing, Borders } from '../../styles/Index';
 import IconButton from './IconButton';

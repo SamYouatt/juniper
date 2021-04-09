@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
 } from 'react-native';
-import { Colours, Spacing, Borders } from '../../styles/Index';
+import { Colours } from '../../styles/Index';
 import { SettingsContext } from '../config/SettingsContext';
 
 export default function PinButton({ text, buttonAction }) {

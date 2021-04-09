@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import * as FileSystem from 'expo-file-system';
 
 import {
-  View, Text, Button, StyleSheet, FlatList,
+  View, Text, StyleSheet, FlatList,
 } from 'react-native';
 import TaskWidgetSummary from '../components/TaskWidgetSummary';
 import Summary from '../components/Summary';

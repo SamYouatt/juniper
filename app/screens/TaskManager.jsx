@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Alert, StyleSheet, FlatList, TouchableHighlight,
+  View, Text, Alert, StyleSheet, FlatList, TouchableHighlight,
 } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
@@ -9,12 +9,12 @@ import { Validator } from 'jsonschema';
 import { Feather } from '@expo/vector-icons';
 import schema from '../../helpers/schema/TaskSchema';
 import TaskWidgetEditable from '../components/TaskWidgetEditable';
-import { Colours, Spacing, Borders } from '../../styles/Index';
+import { Colours, Spacing } from '../../styles/Index';
 import { SettingsContext } from '../config/SettingsContext';
 
 export default function TaskManager() {
   const [taskList, setTaskList] = useState([]);
-  const [settings, setSettings] = useContext(SettingsContext);
+  const [settings] = useContext(SettingsContext);
 
   useEffect(() => {
     showDirectory();

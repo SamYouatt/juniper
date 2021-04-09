@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import {
-  View, Text, TouchableOpacity, Button, StyleSheet, Image, Settings,
+  View, Text, TouchableOpacity, StyleSheet, Image,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { DateTime } from 'luxon';
@@ -10,7 +10,6 @@ import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import { Colours, Spacing, Borders } from '../../styles/Index';
 import IconButton from './IconButton';
 import { SettingsContext } from '../config/SettingsContext';
-import SettingsScreen from '../screens/SettingsScreen';
 
 export default function TaskWidget({
   fileName, task, navigation, scheduleTask,

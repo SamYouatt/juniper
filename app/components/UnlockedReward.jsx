@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  View, Text, Modal, Button, Image, StyleSheet,
+  View, Text, Modal, Image, StyleSheet,
 } from 'react-native';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
 import { Colours, Borders, Spacing } from '../../styles/Index';

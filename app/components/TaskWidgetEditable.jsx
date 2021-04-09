@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import * as FileSystem from 'expo-file-system';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
-  View, Text, Button, TouchableHighlight, StyleSheet, Image,
+  View, Text, StyleSheet, Image,
 } from 'react-native';
 import { DateTime } from 'luxon';
 import { Colours, Spacing, Borders } from '../../styles/Index';
@@ -33,7 +33,7 @@ export default function TaskWidgetEditable({ fileName }) {
   };
 
   const deleteFile = async () => {
-    const deleted = await FileSystem.deleteAsync(filePath);
+    await FileSystem.deleteAsync(filePath);
   };
 
   const showDatePicker = () => {

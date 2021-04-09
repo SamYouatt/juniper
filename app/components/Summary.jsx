@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import {
-  View, Text, Button, StyleSheet,
+  View, Text, StyleSheet,
 } from 'react-native';
 import { Colours, Borders, Spacing } from '../../styles/Index';
 import { SettingsContext } from '../config/SettingsContext';

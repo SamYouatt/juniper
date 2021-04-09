@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Modal, TextInput, StyleSheet, ImageBackground, Image,
+  View, Text, Modal, TextInput, StyleSheet, ImageBackground, Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';

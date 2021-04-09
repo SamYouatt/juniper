@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Alert, Image, StyleSheet,
+  View, Text, Alert, Image, StyleSheet,
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import shuffle from '../../helpers/Helpers';
@@ -100,7 +100,6 @@ export default function Question({ route, navigation }) {
     if (unlockedList.includes(possibleUnlock)) {
       unlockReward(unlockedList, unlockedListPath);
     } else {
-      console.log(`Unlocked ${possibleUnlock}`);
       unlockedList.push(possibleUnlock);
       const toSave = JSON.stringify(unlockedList);
       await FileSystem.writeAsStringAsync(unlockedListPath, toSave);

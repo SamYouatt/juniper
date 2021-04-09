@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 import {
-  View, Text, Button, StyleSheet,
+  View, Text, StyleSheet,
 } from 'react-native';
 import { Colours, Spacing, Borders } from '../../styles/Index';
 import { SettingsContext } from '../config/SettingsContext';

@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import {
-  View, Text, Button, Modal, Alert, Settings, StyleSheet,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
-import PinCode from '../components/PinCode';
 import SettingsScreen from './SettingsScreen';
 import TaskManager from './TaskManager';
 import SummaryScreen from './SummaryScreen';
 import { SettingsContext } from '../config/SettingsContext';
 import { Colours } from '../../styles/Index';
 
-export default function AdultScreen({ navigation }) {
+export default function AdultScreen() {
   const [settings] = useContext(SettingsContext);
   const Tab = createBottomTabNavigator();
 

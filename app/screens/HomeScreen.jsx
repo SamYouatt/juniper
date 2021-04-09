@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  StyleSheet, Text, View, Button, Modal, Alert, FlatList, Settings,
+  StyleSheet, Text, View, Modal, Alert, FlatList,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
 import { SettingsContext } from '../config/SettingsContext';
@@ -18,7 +17,7 @@ export default function HomeScreen({ navigation }) {
   const [unscheduledTasks, setUnscheduledTasks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const focus = useIsFocused();
-  const [settings, setSettings] = useContext(SettingsContext);
+  const [settings] = useContext(SettingsContext);
 
   useEffect(() => {
     if (focus) {
@@ -30,10 +29,6 @@ export default function HomeScreen({ navigation }) {
     setUnscheduledTasks([]);
     setScheduledTasks([]);
     loadTasks();
-  };
-
-  const loadSettings = async () => {
-    const font = await AsyncStorage.getItem('font-family') ?? 'Helvetica';
   };
 
   const loadTasks = async () => {
