@@ -112,12 +112,12 @@ export default function SettingsScreen() {
               setFontFamily(itemValue);
             }}
             mode="dropdown"
-            style={styles.picker}
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
           >
-            <Picker.Item label="Helvetica" value="Helvetica" color={Colours[settings.theme].text} />
-            <Picker.Item label="Comic Sans" value="ComicSans" color={Colours[settings.theme].text} />
-            <Picker.Item label="Garamond" value="Garamond" color={Colours[settings.theme].text} />
-            <Picker.Item label="OpenDyslexic" value="OpenDyslexic" color={Colours[settings.theme].text} />
+            <Picker.Item label="Helvetica" value="Helvetica" color="#000" />
+            <Picker.Item label="Comic Sans" value="ComicSans" color="#000" />
+            <Picker.Item label="Garamond" value="Garamond" color="#000" />
+            <Picker.Item label="OpenDyslexic" value="OpenDyslexic" color="#000" />
           </Picker>
         </View>
       </View>
@@ -134,11 +134,11 @@ export default function SettingsScreen() {
               setFontSize(itemValue);
             }}
             mode="dropdown"
-            style={styles.picker}
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
           >
-            <Picker.Item label="Small" value="0.8" color={Colours[settings.theme].text} />
-            <Picker.Item label="Medium" value="1.0" color={Colours[settings.theme].text} />
-            <Picker.Item label="Large" value="1.2" color={Colours[settings.theme].text} />
+            <Picker.Item label="Small" value="0.8" color="#000" />
+            <Picker.Item label="Medium" value="1.0" color="#000" />
+            <Picker.Item label="Large" value="1.2" color="#000" />
           </Picker>
         </View>
       </View>
@@ -155,11 +155,11 @@ export default function SettingsScreen() {
               setFontSpacing(itemValue);
             }}
             mode="dropdown"
-            style={styles.picker}
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
           >
-            <Picker.Item label="Small" value="0" color={Colours[settings.theme].text} />
-            <Picker.Item label="Medium" value="1" color={Colours[settings.theme].text} />
-            <Picker.Item label="Large" value="2" color={Colours[settings.theme].text} />
+            <Picker.Item label="Small" value="0" color="#000" />
+            <Picker.Item label="Medium" value="1" color="#000" />
+            <Picker.Item label="Large" value="2" color="#000" />
           </Picker>
         </View>
       </View>
@@ -174,13 +174,13 @@ export default function SettingsScreen() {
               setTheme(itemValue);
             }}
             mode="dropdown"
-            style={styles.picker}
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
           >
-            <Picker.Item label="Default" value="main" color={Colours[settings.theme].text} />
-            <Picker.Item label="Ocean" value="ocean" color={Colours[settings.theme].text} />
-            <Picker.Item label="Peppermint" value="peppermint" color={Colours[settings.theme].text} />
-            <Picker.Item label="Dyslexia Sepia" value="dyslexia-sepia" color={Colours[settings.theme].text} />
-            <Picker.Item label="Dyslexia Peach" value="dyslexia-peach" color={Colours[settings.theme].text} />
+            <Picker.Item label="Default" value="main" color="#000" />
+            <Picker.Item label="Ocean" value="ocean" color="#000" />
+            <Picker.Item label="Peppermint" value="peppermint" color="#000" />
+            <Picker.Item label="Dyslexia Sepia" value="dyslexia-sepia" color="#000" />
+            <Picker.Item label="Dyslexia Peach" value="dyslexia-peach" color="#000" />
           </Picker>
         </View>
       </View>
@@ -192,7 +192,7 @@ export default function SettingsScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.outer}>
-          <View style={styles.modalcontent}>
+          <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
             <PinCode onSubmit={pinSubmitted} dismissAction={() => setModalVisible(false)} />
           </View>
         </View>
@@ -220,6 +220,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: Spacing.padding.mid,
+  },
+  picker: {
+    color: Colours['peppermint'].text,
   },
   settingname: {
     flex: 1,

@@ -105,9 +105,9 @@ export default function TaskWidgetEditable({ fileName }) {
               <Text style={[styles.title, { color: Colours[settings.theme].text }]}>
                 {task.name}
               </Text>
-              <Text style={styles.details}>{`${task.questions.length} questions`}</Text>
-              <Text style={styles.details}>{`${task.scheduled ? `Scheduled: ${prettyDate(task.scheduled)}` : 'Not scheduled'}`}</Text>
-              <Text style={styles.details}>{`Completed: ${task.completed ? prettyDate(task.dateCompleted) : 'No'}`}</Text>
+              <Text style={[styles.details, { color: Colours[settings.theme].text }]}>{`${task.questions.length} questions`}</Text>
+              <Text style={[styles.details, { color: Colours[settings.theme].text }]}>{`${task.scheduled ? `Scheduled: ${prettyDate(task.scheduled)}` : 'Not scheduled'}`}</Text>
+              <Text style={[styles.details, { color: Colours[settings.theme].text }]}>{`Completed: ${task.completed ? prettyDate(task.dateCompleted) : 'No'}`}</Text>
             </View>
             <View style={styles.controls}>
               {task.scheduled && <IconButtonBelow icon="x-square" text="Unschedule" buttonAction={unschedule} />}

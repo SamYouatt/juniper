@@ -14,7 +14,7 @@ export default function IconButton({ icon, text, buttonAction }) {
   return (
     <View style={[styles.container, { backgroundColor: Colours[settings.theme].mid }]}>
       <TouchableOpacity onPress={buttonAction} style={styles.touchable}>
-        <Feather name={icon} size={32} color={Colours['main'].altdark} />
+        <Feather name={icon} size={32} color={Colours[settings.theme].altdark} />
         <Text style={[styles.text, {
           color: Colours[settings.theme].altdark,
           fontSize: 18 * settings.fontSize,

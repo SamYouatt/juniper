@@ -106,7 +106,7 @@ export default function TaskWidget({
             </Text>
           </View>
           <View style={styles.arrowzone}>
-            <Feather name="arrow-right" size={48} color={Colours['main'].altdark} />
+            <Feather name="arrow-right" size={48} color={Colours[settings.theme].altdark} />
           </View>
         </TouchableOpacity>
       </View>

@@ -34,7 +34,7 @@ export default function AdultScreen({ navigation }) {
       })}
       tabBarOptions={{
         style: [styles.tab, { backgroundColor: Colours[settings.theme].altlight }],
-        labelStyle: styles.headers,
+        labelStyle: [styles.headers, { color: Colours[settings.theme].text }],
         activeBackgroundColor: Colours[settings.theme].mid,
       }}
     >
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
   },
   headers: {
     fontSize: 18,
-    color: Colours['main'].text,
+    // color: Colours['main'].text,
   },
 });

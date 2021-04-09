@@ -135,13 +135,13 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: Colours['main'].back }]}>
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
       <View style={styles.top}>
         <ImageBackground
           source={UnlockablesIndex[chosenBackground].uri}
-          style={[styles.background, { borderBottomColor: Colours['main'].mid }]}
+          style={[styles.background, { borderBottomColor: Colours[settings.theme].mid }]}
         >
-          <View style={[styles.avatarzone, { backgroundColor: Colours['main'].mid }]}>
+          <View style={[styles.avatarzone, { backgroundColor: Colours[settings.theme].mid }]}>
             <Image source={UnlockablesIndex[chosenAvatar].uri} style={styles.avatar} />
           </View>
           <View style={styles.accolade}>
@@ -153,7 +153,7 @@ export default function ProfileScreen() {
       <View style={styles.bottom}>
         <View style={styles.left}>
           <Text style={[styles.description, {
-            color: Colours['main'].altdark,
+            color: Colours[settings.theme].altdark,
             fontSize: 32 * settings.fontSize,
             fontFamily: settings.fontFamily,
             letterSpacing: settings.fontSpacing,
@@ -194,7 +194,7 @@ export default function ProfileScreen() {
 
       <Modal animationType="slide" visible={descriptionModal} transparent onRequestClose={() => setDescriptionModal(false)}>
         <View style={styles.outer}>
-          <View style={[styles.modalcontent, { backgroundColor: Colours['main'].back }]}>
+          <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
             <TextInput
               multiline
               maxLength={250}
@@ -202,8 +202,8 @@ export default function ProfileScreen() {
               onSubmitEditing={(value) => setDescription(value)}
               onChangeText={(value) => setTempDescription(value)}
               style={[styles.textbox, {
-                backgroundColor: Colours['main'].mid,
-                color: Colours['main'].text,
+                backgroundColor: Colours[settings.theme].mid,
+                color: Colours[settings.theme].text,
                 fontSize: 28 * settings.fontSize,
                 fontFamily: settings.fontFamily,
                 letterSpacing: settings.fontSpacing,

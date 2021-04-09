@@ -94,8 +94,10 @@ export default function TaskManager() {
         <View style={[styles.button, { backgroundColor: Colours[settings.theme].mid }]}>
           <TouchableHighlight onPress={importTask} underlayColor="white">
             <View style={styles.buttonInner}>
-              <Feather name="folder" size={40} color={Colours['main'].altdark} />
-              <Text style={styles.buttonText}>Select Tasks to Import</Text>
+              <Feather name="folder" size={40} color={Colours[settings.theme].altdark} />
+              <Text style={[styles.buttonText, { color: Colours[settings.theme].altdark }]}>
+                Select Tasks to Import
+              </Text>
             </View>
           </TouchableHighlight>
         </View>

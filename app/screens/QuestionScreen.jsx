@@ -144,7 +144,7 @@ export default function Question({ route, navigation }) {
         )}
         <View style={styles.textzone}>
           <Text style={[styles.questiontext, {
-            color: Colours['main'].text,
+            color: Colours[settings.theme].text,
             fontSize: 32 * settings.fontSize,
             fontFamily: settings.fontFamily,
             letterSpacing: settings.fontSpacing,
