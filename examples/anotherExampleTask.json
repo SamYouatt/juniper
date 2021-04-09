@@ -1,6 +1,6 @@
 {
     "name": "Another Example Task",
-    "image": "fruit",
+    "image": "mountain-biking",
     "time": 10,
     "scheduled": null,
     "completed": false,

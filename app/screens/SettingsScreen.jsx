@@ -1,28 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Modal, Alert,
+  View, Text, Modal, Alert, StyleSheet,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 import PinCode from '../components/PinCode';
+import IconButton from '../components/IconButton';
+import { SettingsContext } from '../config/SettingsContext';
+import { Colours, Spacing, Borders } from '../../styles/Index';
 
 export default function SettingsScreen() {
-  const [fontFamily, setFontFamily] = React.useState('helvetica');
-  const [fontSize, setFontSize] = React.useState('medium');
+  const [fontFamily, setFontFamily] = useState('Helvetica');
+  const [fontSize, setFontSize] = useState('1');
+  const [fontSpacing, setFontSpacing] = useState('1');
+  const [theme, setTheme] = useState('main');
   const [pin, setPin] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [settings, setSettings] = useContext(SettingsContext);
 
-  React.useEffect(() => {
-    getData('font-family').then((value) => setFontFamily(value));
-    getData('font-size').then((value) => setFontSize(value));
+  useEffect(() => {
+    getData('fontFamily').then((value) => setFontFamily(value));
+    getData('fontSize').then((value) => setFontSize(value));
+    getData('fontSpacing').then((value) => setFontSpacing(value));
+    getData('theme').then((value) => setTheme(value));
     getPin();
   }, []);
 
   const storeData = async (key, value) => {
     try {
       await AsyncStorage.setItem(key, value);
+      const temp = { ...settings };
+      if (key === 'fontSpacing' ?? key === 'fontSize') {
+        temp[key] = parseInt(value);
+      } else {
+        temp[key] = value;
+      }
+      setSettings(temp);
     } catch (e) {
-      // saving error
+      Alert.alert(null, 'Something went wrong please try again');
     }
   };
 
@@ -80,62 +95,161 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View>
-      <Text>Text Settings</Text>
-      <Text>Font</Text>
-      <DropDownPicker
-        items={[
-          { label: 'Sans-Serif', value: 'sans-serif', untouchable: true },
-          { label: 'Helvetica', value: 'helvetica', parent: 'sans-serif' },
-          { label: 'Comic Sans', value: 'comicsans', parent: 'sans-serif' },
-          { label: 'Serif', value: 'serif', untouchable: true },
-          { label: 'Garamond', value: 'garamond', parent: 'serif' },
-          { label: 'Dyslexic Friendly', value: 'dyslexic', untouchable: true },
-          { label: 'OpenDyslexic', value: 'opendyslexic', parent: 'dyslexic' },
-        ]}
-        defaultValue={fontFamily}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'center' }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => storeData('font-family', item.value)}
-      />
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
+      <View style={styles.pinbuttons}>
+        {!pin && <IconButton icon="lock" buttonAction={addPin} text="Add Pin" />}
+        {pin && <IconButton icon="unlock" buttonAction={deletePin} text="Remove Pin" />}
+        {pin && <IconButton icon="lock" buttonAction={changePin} text="Change Pin" />}
+      </View>
 
-      <Text>Font Size</Text>
-      <DropDownPicker
-        items={[
-          { label: 'small', value: 'small' },
-          { label: 'medium', value: 'medium' },
-          { label: 'large', value: 'large' },
-          { label: 'x-large', value: 'xlarge' },
-          { label: 'xx-large', value: 'xxlarge' },
-        ]}
-        defaultValue={fontSize}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemstyle={{ justifyContent: 'flex-start' }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => storeData('font-size', item.value)}
-      />
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>Font:</Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={fontFamily}
+            onValueChange={(itemValue) => {
+              storeData('fontFamily', itemValue);
+              setFontFamily(itemValue);
+            }}
+            mode="dropdown"
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
+          >
+            <Picker.Item label="Helvetica" value="Helvetica" color="#000" />
+            <Picker.Item label="Comic Sans" value="ComicSans" color="#000" />
+            <Picker.Item label="Garamond" value="Garamond" color="#000" />
+            <Picker.Item label="OpenDyslexic" value="OpenDyslexic" color="#000" />
+          </Picker>
+        </View>
+      </View>
 
-      {pin
-        ? <Button title="Change pin" onPress={changePin} />
-        : <Button title="Add pin" onPress={addPin} />}
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>
+          Font Size:
+        </Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={fontSize}
+            onValueChange={(itemValue) => {
+              storeData('fontSize', itemValue);
+              setFontSize(itemValue);
+            }}
+            mode="dropdown"
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
+          >
+            <Picker.Item label="Small" value="0.8" color="#000" />
+            <Picker.Item label="Medium" value="1.0" color="#000" />
+            <Picker.Item label="Large" value="1.2" color="#000" />
+          </Picker>
+        </View>
+      </View>
 
-      <Button title="delete pin" onPress={deletePin} />
-      <Button title="test" onPress={() => console.log(pin)} />
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>
+          Letter Spacing:
+        </Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={fontSpacing}
+            onValueChange={(itemValue) => {
+              storeData('fontSpacing', itemValue);
+              setFontSpacing(itemValue);
+            }}
+            mode="dropdown"
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
+          >
+            <Picker.Item label="Small" value="0" color="#000" />
+            <Picker.Item label="Medium" value="1" color="#000" />
+            <Picker.Item label="Large" value="2" color="#000" />
+          </Picker>
+        </View>
+      </View>
+
+      <View style={styles.setting}>
+        <Text style={[styles.settingname, { color: Colours[settings.theme].altdark }]}>Theme:</Text>
+        <View style={[styles.pickercontainer, { backgroundColor: Colours[settings.theme].mid }]}>
+          <Picker
+            selectedValue={theme}
+            onValueChange={(itemValue) => {
+              storeData('theme', itemValue);
+              setTheme(itemValue);
+            }}
+            mode="dropdown"
+            style={[styles.picker, { color: Colours[settings.theme].text }]}
+          >
+            <Picker.Item label="Default" value="main" color="#000" />
+            <Picker.Item label="Ocean" value="ocean" color="#000" />
+            <Picker.Item label="Peppermint" value="peppermint" color="#000" />
+            <Picker.Item label="Dyslexia Sepia" value="dyslexia-sepia" color="#000" />
+            <Picker.Item label="Dyslexia Peach" value="dyslexia-peach" color="#000" />
+          </Picker>
+        </View>
+      </View>
 
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Text>Enter pincode</Text>
-        <PinCode onSubmit={pinSubmitted} />
-        <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+        <View style={styles.outer}>
+          <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
+            <PinCode onSubmit={pinSubmitted} dismissAction={() => setModalVisible(false)} />
+          </View>
+        </View>
       </Modal>
     </View>
 
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: Spacing.padding.mid,
+    alignItems: 'center',
+    // backgroundColor: Colours['main'].back,
+  },
+  pinbuttons: {
+    flexDirection: 'row',
+    width: '50%',
+    justifyContent: 'space-evenly',
+    marginBottom: Spacing.margin.large,
+  },
+  setting: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
+  },
+  picker: {
+    color: Colours['peppermint'].text,
+  },
+  settingname: {
+    flex: 1,
+    textAlign: 'right',
+    marginRight: Spacing.margin.large,
+    fontSize: 24,
+    // color: Colours['main'].altdark,
+  },
+  pickercontainer: {
+    flex: 4,
+    // backgroundColor: Colours['main'].mid,
+    borderRadius: Borders.radius.small,
+    marginRight: Spacing.margin.large,
+  },
+  outer: {
+    flex: 1,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalcontent: {
+    width: '25%',
+    height: '70%',
+    backgroundColor: Colours['main'].back,
+    borderRadius: Borders.radius.large,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
+  },
+});

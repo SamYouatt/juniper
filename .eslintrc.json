@@ -22,12 +22,14 @@
         "react/style-prop-object": "warn",
         "no-unused-vars": "warn",
         "react/prop-types": "off",
-        "global-require": "warn",
+        "global-require": "off",
         "quote-props": "off",
         "max-len": "warn",
         "no-plusplus": "off",
         "no-param-reassign": "off",
         "import/no-dynamic-require": "error",
-        "dot-notation": "warn"
+        "dot-notation": "off",
+        "import/prefer-default-export": "warn",
+        "radix": "off"
     }
 }

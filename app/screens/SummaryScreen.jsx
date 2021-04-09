@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import * as FileSystem from 'expo-file-system';
 
-import { View, Text, Button } from 'react-native';
+import {
+  View, Text, StyleSheet, FlatList,
+} from 'react-native';
 import TaskWidgetSummary from '../components/TaskWidgetSummary';
 import Summary from '../components/Summary';
+import { Colours, Spacing } from '../../styles/Index';
+import { SettingsContext } from '../config/SettingsContext';
 
 export default function SummaryScreen() {
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [settings] = useContext(SettingsContext);
   const tasksDir = `${FileSystem.documentDirectory}tasks`;
 
   useEffect(() => {
@@ -42,12 +47,39 @@ export default function SummaryScreen() {
   };
 
   return (
-    <View>
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
       {completedTasks.length < 1 && <Text>No tasks completed so far</Text>}
-      {completedTasks.length > 0 && <Summary tasks={completedTasks} />}
-      {completedTasks.length > 0 && completedTasks.map((task) => (
-        <TaskWidgetSummary task={task} key={task.name} />
-      ))}
+      {completedTasks.length > 0 && (
+        <View style={styles.summary}>
+          <Summary tasks={completedTasks} />
+        </View>
+      )}
+      {completedTasks.length > 0 && (
+        <FlatList
+          data={[...completedTasks]}
+          renderItem={({ item }) => (
+            <View style={styles.task} key={`view${item.name}`}>
+              <TaskWidgetSummary task={item} key={item.name} />
+            </View>
+          )}
+          keyExtractor={(item) => `list${item.name}`}
+        />
+      )}
+
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    // backgroundColor: Colours['main'].back,
+  },
+  summary: {
+    marginTop: Spacing.margin.mid,
+  },
+  task: {
+    marginTop: Spacing.margin.mid,
+  },
+});

@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  View, Text, Button, Alert, Image,
+  View, Text, Alert, Image, StyleSheet,
 } from 'react-native';
-
 import * as FileSystem from 'expo-file-system';
 import shuffle from '../../helpers/Helpers';
 import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import UnlockablesIndex from '../../assets/images/unlockables/UnlockablesIndex';
 import Unlock from '../components/UnlockedReward';
+import AnswerButton from '../components/AnswerButton';
+import { Spacing, Colours, Borders } from '../../styles/Index';
+import QuestionsRemaining from '../components/QuestionsRemaining';
+import { SettingsContext } from '../config/SettingsContext';
 
 const defaultUnlocks = [...require('../../assets/images/unlockables/unlockedDefault.json')];
 
@@ -17,6 +19,8 @@ export default function Question({ route, navigation }) {
   const [score, setScore] = useState(0);
   const [rewardModalVisible, setRewardModalVisible] = useState(false);
   const [unlockedReward, setUnlockedReward] = useState();
+  const [settings] = useContext(SettingsContext);
+  const [firstGuess, setFirstGuess] = useState(true);
 
   const { task } = route.params;
   const { fileName } = route.params;
@@ -30,6 +34,12 @@ export default function Question({ route, navigation }) {
     navigation.setOptions({ title: task !== null ? task.name : 'Task' });
   }, [task]);
 
+  useEffect(() => {
+    if (score !== 0) {
+      nextQuestion();
+    }
+  }, [score]);
+
   const nextQuestion = () => {
     if (current + 1 < numQuestions) {
       setCurrent(current + 1);
@@ -39,11 +49,17 @@ export default function Question({ route, navigation }) {
   };
 
   const rightAnswer = () => {
-    setScore(score + 1);
-    nextQuestion();
+    if (firstGuess) {
+      setScore((prevState) => prevState + 1);
+    } else {
+      nextQuestion();
+    }
+    setFirstGuess(true);
   };
 
   const wrongAnswer = () => {
+    setFirstGuess(false);
+    setScore(score);
     Alert.alert(null, "That's not quite right");
   };
 
@@ -84,7 +100,6 @@ export default function Question({ route, navigation }) {
     if (unlockedList.includes(possibleUnlock)) {
       unlockReward(unlockedList, unlockedListPath);
     } else {
-      console.log(`Unlocked ${possibleUnlock}`);
       unlockedList.push(possibleUnlock);
       const toSave = JSON.stringify(unlockedList);
       await FileSystem.writeAsStringAsync(unlockedListPath, toSave);
@@ -113,28 +128,38 @@ export default function Question({ route, navigation }) {
   };
 
   return (
-    <View>
-      {task.questions.length - current === 1
-        ? (
-          <Text>
-            Final question
-          </Text>
-        )
-        : (
-          <Text>
-            {task.questions.length - current}
-            {' '}
-            Questions remaining
-          </Text>
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
+      <View style={styles.questionsleft}>
+        <QuestionsRemaining questions={task.questions} current={current} />
+      </View>
+
+      <View style={styles.question}>
+        {task.questions[current].image
+        && Object.keys(SymbolsIndex).includes(task.questions[current].image)
+        && (
+          <View style={styles.imagezone}>
+            <Image source={SymbolsIndex[`${task.questions[current].image}`].uri} style={styles.image} />
+          </View>
         )}
-      <Text>{task.questions[current].questionText}</Text>
-      {task.questions[current].image && task.questions[current].image in SymbolsIndex && <Image source={SymbolsIndex[`${task.questions[current].image}`].uri} />}
-      {questions[current].answers.map((answer) => (
-        {
-          ...answer.correct
-            ? <Button title={`* ${answer.text ?? ''}`} onPress={rightAnswer} key={answer.text ?? answer.image} />
-            : <Button title={answer.text ?? ''} onPress={wrongAnswer} key={answer.text ?? answer.image} />,
-        }))}
+        <View style={styles.textzone}>
+          <Text style={[styles.questiontext, {
+            color: Colours[settings.theme].text,
+            fontSize: 32 * settings.fontSize,
+            fontFamily: settings.fontFamily,
+            letterSpacing: settings.fontSpacing,
+          }]}
+          >
+            {task.questions[current].questionText}
+
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.answers}>
+        {questions[current].answers.map((answer) => (
+          <AnswerButton answer={answer} rightAnswer={rightAnswer} wrongAnswer={wrongAnswer} />
+        ))}
+      </View>
 
       <Unlock
         modalVisible={rewardModalVisible}
@@ -143,8 +168,57 @@ export default function Question({ route, navigation }) {
         setModalVisible={setRewardModalVisible}
       />
 
-      <Button title="Reset unlocks" onPress={resetUnlocks} />
-      <Button title="Show unlocked list" onPress={showUnlocked} />
+      {/* <Button title="Reset unlocks" onPress={resetUnlocks} />
+      <Button title="Show unlocked list" onPress={showUnlocked} /> */}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: Spacing.padding.mid,
+    // backgroundColor: Colours['main'].back,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  questionsleft: {
+    position: 'absolute',
+    bottom: 25,
+  },
+  question: {
+    marginTop: Spacing.margin.large,
+    marginBottom: Spacing.margin.large * 2,
+    flex: 1,
+    flexDirection: 'row',
+    width: '80%',
+  },
+  imagezone: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  image: {
+    borderRadius: Borders.radius.mid,
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  textzone: {
+    flex: 6,
+    justifyContent: 'center',
+  },
+  questiontext: {
+    // fontSize: 32,
+    lineHeight: 50,
+  },
+  answers: {
+    flex: 2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+  },
+  answer: {
+    marginBottom: 10,
+  },
+
+});

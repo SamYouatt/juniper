@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  StyleSheet, Text, View, Button, Modal, Alert,
+  StyleSheet, Text, View, Modal, Alert, FlatList,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DateTime } from 'luxon';
 import TaskWidget from '../components/TaskWidget';
 import PinCode from '../components/PinCode';
+import { SettingsContext } from '../config/SettingsContext';
+import { Colours, Spacing, Borders } from '../../styles/Index';
+import IconButton from '../components/IconButton';
 
 export default function HomeScreen({ navigation }) {
   const [scheduledTasks, setScheduledTasks] = useState([]);
   const [unscheduledTasks, setUnscheduledTasks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const focus = useIsFocused();
+  const [settings] = useContext(SettingsContext);
 
   useEffect(() => {
     if (focus) {
@@ -86,18 +89,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const prettyDate = (date) => {
-    const dt = DateTime.fromISO(date);
-
-    const weekday = dt.weekdayLong;
-    const month = dt.monthLong;
-    const { day } = dt;
-    const time = dt.toLocaleString(DateTime.TIME_24_SIMPLE);
-    const formatted = `${weekday}, ${day} ${month} at ${time}`;
-
-    return formatted;
-  };
-
   const scheduleTask = async (fileName, task, date) => {
     task.scheduled = date;
     const asString = JSON.stringify(task);
@@ -106,55 +97,83 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View>
-      <Text style={styles.main}>Home screen</Text>
-      <Button
-        title="Profile"
-        onPress={() => {
-          navigation.navigate('Profile');
-        }}
-      />
+    <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
+      {scheduledTasks.length > 0 && (
+      <View style={styles.top}>
+        <Text style={[styles.textheader, {
+          color: Colours[settings.theme].altdark,
+          fontSize: 32 * settings.fontSize,
+          fontFamily: settings.fontFamily,
+          letterSpacing: settings.fontSpacing,
+        }]}
+        >
+          Scheduled Tasks
+        </Text>
+        <FlatList
+          data={[...scheduledTasks]}
+          renderItem={({ item }) => (
+            <View style={styles.task} key={`view${item.taskName}`}>
+              <TaskWidget
+                fileName={item.taskName}
+                key={item.taskName}
+                task={item.task}
+                navigation={navigation}
+              />
+            </View>
+          )}
+          keyExtractor={(item) => `list${item.task.name}`}
+        />
+      </View>
+      )}
 
-      <Text>Scheduled Tasks</Text>
+      {unscheduledTasks.length > 0 && (
+      <View style={styles.bottom}>
+        <Text style={[styles.textheader, {
+          color: Colours[settings.theme].altdark,
+          fontSize: 32 * settings.fontSize,
+          fontFamily: settings.fontFamily,
+          letterSpacing: settings.fontSpacing,
+        }]}
+        >
+          Unscheduled Tasks
+        </Text>
+        <FlatList
+          data={[...unscheduledTasks]}
+          renderItem={({ item }) => (
+            <View style={styles.task} key={`view${item.taskName}`}>
+              <TaskWidget
+                fileName={item.taskName}
+                key={item.taskName}
+                task={item.task}
+                navigation={navigation}
+                scheduleTask={scheduleTask}
+              />
+            </View>
+          )}
+          keyExtractor={(item) => `list${item.task.name}`}
+        />
+      </View>
+      )}
 
-      {scheduledTasks.length > 0
-        ? scheduledTasks.map((task) => (
-          <>
-            <Text key={`empty${task.taskName}`}>{prettyDate(task.task.scheduled)}</Text>
-            <TaskWidget
-              fileName={task.taskName}
-              key={task.taskName}
-              task={task.task}
-              navigation={navigation}
-            />
-          </>
-        ))
-        : <Text>No scheduled tasks!</Text>}
+      <View style={styles.profile}>
+        <IconButton icon="award" text="Profile" buttonAction={() => navigation.navigate('Profile')} />
+      </View>
 
-      <Text>Unscheduled Tasks</Text>
+      <View style={styles.adultarea}>
+        <IconButton icon="settings" text="Adult Area" buttonAction={enterAdultArea} />
+      </View>
 
-      {unscheduledTasks.length > 0
-        ? unscheduledTasks.map((task) => (
-          <TaskWidget
-            fileName={task.taskName}
-            key={task.taskName}
-            task={task.task}
-            navigation={navigation}
-            scheduleTask={scheduleTask}
-          />
-        ))
-        : <Text>No unscheduled tasks!</Text>}
-
-      <Button title="Adult area" onPress={enterAdultArea} />
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Text>Enter pincode</Text>
-        <PinCode onSubmit={pinCheck} />
-        <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+        <View style={styles.outer}>
+          <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
+            <PinCode onSubmit={pinCheck} dismissAction={() => setModalVisible(false)} />
+          </View>
+        </View>
       </Modal>
     </View>
   );
@@ -163,12 +182,53 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    // backgroundColor: Colours[settings.theme].back,
+    padding: Spacing.padding.mid,
+    paddingLeft: Spacing.padding.large,
   },
-  main: {
-    fontFamily: 'OpenDyslexic',
-    fontSize: 64,
+  top: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  bottom: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: Spacing.margin.mid,
+  },
+  adultarea: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+  profile: {
+    position: 'absolute',
+    top: 25,
+    right: 25,
+  },
+  textheader: {
+    // fontSize: 32,
+    marginBottom: 25,
+    // color: Colours[settings.theme].altdark,
+  },
+  task: {
+    marginBottom: 15,
+    width: 1000,
+  },
+  outer: {
+    flex: 1,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalcontent: {
+    width: '25%',
+    height: '70%',
+    // backgroundColor: Colours['main'].back,
+    borderRadius: Borders.radius.large,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.padding.mid,
   },
 });
