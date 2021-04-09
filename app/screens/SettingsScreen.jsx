@@ -30,7 +30,11 @@ export default function SettingsScreen() {
     try {
       await AsyncStorage.setItem(key, value);
       const temp = { ...settings };
-      temp[key] = value;
+      if (key === 'fontSpacing' ?? key === 'fontSize') {
+        temp[key] = parseInt(value);
+      } else {
+        temp[key] = value;
+      }
       setSettings(temp);
     } catch (e) {
       Alert.alert(null, 'Something went wrong please try again');
@@ -153,9 +157,9 @@ export default function SettingsScreen() {
             mode="dropdown"
             style={styles.picker}
           >
-            <Picker.Item label="Small" value="0.8" color={Colours[settings.theme].text} />
-            <Picker.Item label="Medium" value="1.0" color={Colours[settings.theme].text} />
-            <Picker.Item label="Large" value="1.2" color={Colours[settings.theme].text} />
+            <Picker.Item label="Small" value="0" color={Colours[settings.theme].text} />
+            <Picker.Item label="Medium" value="1" color={Colours[settings.theme].text} />
+            <Picker.Item label="Large" value="2" color={Colours[settings.theme].text} />
           </Picker>
         </View>
       </View>

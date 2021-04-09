@@ -36,7 +36,7 @@ export default function App() {
     theme: 'main',
     fontFamily: 'Helvetica',
     fontSize: 1,
-    fontSpacing: 1,
+    fontSpacing: 0,
   });
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function App() {
     const storedSettings = {
       fontFamily: 'Helvetica',
       fontSize: 1,
-      fontSpacing: 1,
+      fontSpacing: 0,
       theme: 'main',
     };
 
@@ -67,7 +67,7 @@ export default function App() {
 
     const storedFontSpacing = await AsyncStorage.getItem('fontSpacing');
     if (storedFontSpacing) {
-      storedSettings.fontSpacing = storedFontSpacing;
+      storedSettings.fontSpacing = parseInt(storedFontSpacing);
     } else {
       await AsyncStorage.setItem('fontSpacing', '1');
     }
@@ -86,6 +86,17 @@ export default function App() {
     return <AppLoading />;
   }
 
+  const headerSettings = {
+    headerStyle: {
+      backgroundColor: Colours[settings.theme].mid,
+    },
+    headerTitleStyle: {
+      fontSize: settings.fontSize * 24,
+      color: Colours[settings.theme].altdark,
+      letterSpacing: settings.fontSpacing,
+    },
+  };
+
   return (
     <SettingsContext.Provider value={[settings, setSettings]}>
       <NavigationContainer>
@@ -93,37 +104,32 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-            options={{ title: 'Home', headerTitle: () => <HeaderLogo />, headerStyle: { backgroundColor: Colours['main'].mid } }}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{ title: 'Settings', headerStyle: { backgroundColor: Colours['main'].mid } }}
+            options={{ title: 'Home', headerTitle: () => <HeaderLogo />, headerStyle: { backgroundColor: Colours[settings.theme].mid } }}
           />
           <Stack.Screen
             name="Profile"
             component={ProfileScreen}
-            options={{ title: 'Profile', headerStyle: { backgroundColor: Colours['main'].mid } }}
+            options={{ title: 'Profile', ...headerSettings }}
           />
           <Stack.Screen
             name="Summary"
             component={SummaryScreen}
-            options={{ title: 'Summary', headerStyle: { backgroundColor: Colours['main'].mid } }}
+            options={{ title: 'Summary', ...headerSettings }}
           />
           <Stack.Screen
             name="TaskManager"
             component={TaskManager}
-            options={{ title: 'Task Manager', headerStyle: { backgroundColor: Colours['main'].mid } }}
+            options={{ title: 'Task Manager', ...headerSettings }}
           />
           <Stack.Screen
             name="Question"
             component={Question}
-            options={{ title: 'Question', headerStyle: { backgroundColor: Colours['main'].mid } }}
+            options={{ title: 'Question', ...headerSettings }}
           />
           <Stack.Screen
             name="Adult"
             component={AdultScreen}
-            options={{ title: 'Adult Area', headerStyle: { backgroundColor: Colours['main'].mid } }}
+            options={{ title: 'Adult Area', ...headerSettings }}
           />
         </Stack.Navigator>
       </NavigationContainer>
