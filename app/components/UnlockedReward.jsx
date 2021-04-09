@@ -33,7 +33,13 @@ export default function Unlock({
           <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
             {unlocked && UnlockablesIndex[unlocked] && (
             <View style={styles.unlock}>
-              <Text style={[styles.unlocktext, { color: Colours[settings.theme].altdark }]}>
+              <Text style={[styles.unlocktext, {
+                color: Colours[settings.theme].altdark,
+                fontSize: 32 * settings.fontSize,
+                fontFamily: settings.fontFamily,
+                letterSpacing: settings.fontSpacing,
+              }]}
+              >
                 {`You unlocked a new ${UnlockablesIndex[unlocked].type}:`}
               </Text>
               <View style={styles.imagezone}>

@@ -24,7 +24,13 @@ export default function RewardPicker({
         <View style={styles.outer}>
           <View style={[styles.modalcontent, { backgroundColor: Colours[settings.theme].back }]}>
             <View style={styles.header}>
-              <Text style={[styles.headertext, { color: Colours[settings.theme].altdark }]}>
+              <Text style={[styles.headertext, {
+                color: Colours[settings.theme].altdark,
+                fontSize: 28 * settings.fontSize,
+                fontFamily: `${settings.fontFamily}-bold`,
+                letterSpacing: settings.fontSpacing,
+              }]}
+              >
                 {topMessage}
               </Text>
             </View>
@@ -78,10 +84,10 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.margin.mid,
   },
   headertext: {
-    fontSize: 28,
+    // fontSize: 28,
     textAlignVertical: 'center',
     // color: Colours['main'].altdark,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   contents: {
     flex: 7,

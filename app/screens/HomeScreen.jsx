@@ -105,7 +105,13 @@ export default function HomeScreen({ navigation }) {
     <View style={[styles.container, { backgroundColor: Colours[settings.theme].back }]}>
       {scheduledTasks.length > 0 && (
       <View style={styles.top}>
-        <Text style={[styles.textheader, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.textheader, {
+          color: Colours[settings.theme].altdark,
+          fontSize: 32 * settings.fontSize,
+          fontFamily: settings.fontFamily,
+          letterSpacing: settings.fontSpacing,
+        }]}
+        >
           Scheduled Tasks
         </Text>
         <FlatList
@@ -127,7 +133,13 @@ export default function HomeScreen({ navigation }) {
 
       {unscheduledTasks.length > 0 && (
       <View style={styles.bottom}>
-        <Text style={[styles.textheader, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.textheader, {
+          color: Colours[settings.theme].altdark,
+          fontSize: 32 * settings.fontSize,
+          fontFamily: settings.fontFamily,
+          letterSpacing: settings.fontSpacing,
+        }]}
+        >
           Unscheduled Tasks
         </Text>
         <FlatList
@@ -156,13 +168,6 @@ export default function HomeScreen({ navigation }) {
         <IconButton icon="settings" text="Adult Area" buttonAction={enterAdultArea} />
       </View>
 
-      <Button
-        title="Test"
-        onPress={() => {
-          console.log(settings);
-        }}
-      />
-
       <Modal
         animationType="slide"
         transparent
@@ -182,10 +187,11 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     // backgroundColor: Colours[settings.theme].back,
-    padding: 15,
+    padding: Spacing.padding.mid,
+    paddingLeft: Spacing.padding.large,
   },
   top: {
     flex: 1,
@@ -207,12 +213,13 @@ const styles = StyleSheet.create({
     right: 25,
   },
   textheader: {
-    fontSize: 32,
+    // fontSize: 32,
     marginBottom: 25,
     // color: Colours[settings.theme].altdark,
   },
   task: {
     marginBottom: 15,
+    width: 1000,
   },
   outer: {
     flex: 1,

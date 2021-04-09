@@ -29,6 +29,7 @@ export default function App() {
     'ComicSans': require('./assets/fonts/ComicSans/Comic-Sans.ttf'),
     'ComicSans-bold': require('./assets/fonts/ComicSans/Comic-Sans-Bold.ttf'),
     'Garamond': require('./assets/fonts/Garamond/Garamond.ttf'),
+    'Garamond-bold': require('./assets/fonts/Garamond/EBGaramond-Bold.ttf'),
     'OpenDyslexic': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf'),
     'OpenDyslexic-bold': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Bold.otf'),
   });
@@ -94,6 +95,7 @@ export default function App() {
       fontSize: settings.fontSize * 24,
       color: Colours[settings.theme].altdark,
       letterSpacing: settings.fontSpacing,
+      fontFamily: settings.fontFamily,
     },
   };
 
@@ -104,7 +106,7 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-            options={{ title: 'Home', headerTitle: () => <HeaderLogo />, headerStyle: { backgroundColor: Colours[settings.theme].mid } }}
+            options={{ title: 'Home', headerTitle: () => <HeaderLogo />, headerStyle: { backgroundColor: Colours[settings.theme].back } }}
           />
           <Stack.Screen
             name="Profile"

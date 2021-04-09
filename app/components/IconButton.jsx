@@ -9,13 +9,21 @@ import { Colours, Spacing, Borders } from '../../styles/Index';
 import { SettingsContext } from '../config/SettingsContext';
 
 export default function IconButton({ icon, text, buttonAction }) {
-  const [settings, setSettings] = useContext(SettingsContext);
+  const [settings] = useContext(SettingsContext);
 
   return (
     <View style={[styles.container, { backgroundColor: Colours[settings.theme].mid }]}>
       <TouchableOpacity onPress={buttonAction} style={styles.touchable}>
         <Feather name={icon} size={32} color={Colours['main'].altdark} />
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>{text}</Text>
+        <Text style={[styles.text, {
+          color: Colours[settings.theme].altdark,
+          fontSize: 18 * settings.fontSize,
+          letterSpacing: settings.fontSpacing,
+          fontFamily: `${settings.fontFamily}-bold`,
+        }]}
+        >
+          {text}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -34,11 +42,11 @@ const styles = StyleSheet.create({
     height: 40,
   },
   text: {
-    fontFamily: 'Helvetica',
+    // fontFamily: 'Helvetica',
     fontSize: 18,
     marginLeft: 10,
     marginRight: Spacing.margin.small,
     // color: Colours[settings.theme].altdark,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
 });

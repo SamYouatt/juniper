@@ -37,41 +37,54 @@ export default function ProfileAccolade({ tasks }) {
     }
   };
 
+  const textStyling = {
+    color: Colours[settings.theme].altdark,
+    fontSize: 24 * settings.fontSize,
+    fontFamily: settings.fontFamily,
+    letterSpacing: settings.fontSpacing,
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: Colours[settings.theme].mid }]}>
-      <Text style={[styles.header, { color: Colours[settings.theme].altdark }]}>
+      <Text style={[styles.header, {
+        color: Colours[settings.theme].altdark,
+        fontSize: 24 * settings.fontSize,
+        fontFamily: `${settings.fontFamily}-bold`,
+        letterSpacing: settings.fontSpacing,
+      }]}
+      >
         Tasks completed:
       </Text>
 
       <View style={styles.line}>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           Today:
         </Text>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           {dayList.length}
         </Text>
       </View>
       <View style={styles.line}>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           Week:
         </Text>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           {weekList.length}
         </Text>
       </View>
       <View style={styles.line}>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           Month:
         </Text>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           {monthList.length}
         </Text>
       </View>
       <View style={styles.line}>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           Total:
         </Text>
-        <Text style={[styles.text, { color: Colours[settings.theme].altdark }]}>
+        <Text style={[styles.text, textStyling]}>
           {tasks.length}
         </Text>
       </View>
@@ -94,12 +107,12 @@ const styles = StyleSheet.create({
   },
   header: {
     // color: Colours['main'].altdark,
-    fontSize: 24,
-    fontWeight: 'bold',
+    // fontSize: 24,
+    // fontWeight: 'bold',
     marginBottom: Spacing.margin.mid,
   },
   text: {
     // color: Colours['main'].altdark,
-    fontSize: 24,
+    // fontSize: 24,
   },
 });

@@ -23,7 +23,13 @@ export default function AnswerButton({ answer, rightAnswer, wrongAnswer }) {
         )}
         {answer.text && (
           <View style={styles.textzone}>
-            <Text style={[styles.text, { color: Colours[settings.theme].text }]}>
+            <Text style={[styles.text, {
+              color: Colours[settings.theme].text,
+              fontSize: settings.fontSize * 32,
+              letterSpacing: settings.fontSpacing,
+              fontFamily: settings.fontFamily,
+            }]}
+            >
               {answer.text}
             </Text>
           </View>
@@ -64,7 +70,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text: {
-    fontSize: 32,
+    // fontSize: 32,
     textAlign: 'center',
     // color: Colours['main'].text,
   },

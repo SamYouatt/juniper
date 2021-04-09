@@ -143,7 +143,16 @@ export default function Question({ route, navigation }) {
           </View>
         )}
         <View style={styles.textzone}>
-          <Text style={styles.questiontext}>{task.questions[current].questionText}</Text>
+          <Text style={[styles.questiontext, {
+            color: Colours['main'].text,
+            fontSize: 32 * settings.fontSize,
+            fontFamily: settings.fontFamily,
+            letterSpacing: settings.fontSpacing,
+          }]}
+          >
+            {task.questions[current].questionText}
+
+          </Text>
         </View>
       </View>
 
@@ -200,7 +209,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   questiontext: {
-    fontSize: 32,
+    // fontSize: 32,
     lineHeight: 50,
   },
   answers: {

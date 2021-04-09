@@ -10,6 +10,7 @@ import SymbolsIndex from '../../assets/images/symbols/SymbolsIndex';
 import { Colours, Spacing, Borders } from '../../styles/Index';
 import IconButton from './IconButton';
 import { SettingsContext } from '../config/SettingsContext';
+import SettingsScreen from '../screens/SettingsScreen';
 
 export default function TaskWidget({
   fileName, task, navigation, scheduleTask,
@@ -53,7 +54,13 @@ export default function TaskWidget({
       <View style={styles.left}>
         {task.scheduled
           ? (
-            <Text style={[styles.date, { color: Colours[settings.theme].altdark }]}>
+            <Text style={[styles.date, {
+              color: Colours[settings.theme].altdark,
+              fontSize: 22 * settings.fontSize,
+              fontFamily: settings.fontFamily,
+              letterSpacing: settings.fontSpacing,
+            }]}
+            >
               {prettyDate(task.scheduled)}
             </Text>
           )
@@ -70,9 +77,33 @@ export default function TaskWidget({
           </View>
           )}
           <View style={styles.info}>
-            <Text style={[styles.title, { color: Colours[settings.theme].text }]}>{task.name}</Text>
-            <Text style={[styles.details, { color: Colours[settings.theme].altdark }]}>{`${task.questions.length} questions`}</Text>
-            <Text style={[styles.details, { color: Colours[settings.theme].altdark }]}>{`${task.time} minutes`}</Text>
+            <Text style={[styles.title, {
+              color: Colours[settings.theme].text,
+              fontSize: 25 * settings.fontSize,
+              fontFamily: `${settings.fontFamily}-bold`,
+              letterSpacing: settings.fontSpacing,
+            }]}
+            >
+              {task.name}
+            </Text>
+            <Text style={[styles.details, {
+              color: Colours[settings.theme].altdark,
+              fontSize: 18 * settings.fontSize,
+              fontFamily: settings.fontFamily,
+              letterSpacing: settings.fontSpacing,
+            }]}
+            >
+              {`${task.questions.length} questions`}
+            </Text>
+            <Text style={[styles.details, {
+              color: Colours[settings.theme].altdark,
+              fontSize: 18 * settings.fontSize,
+              fontFamily: settings.fontFamily,
+              letterSpacing: settings.fontSpacing,
+            }]}
+            >
+              {`${task.time} minutes`}
+            </Text>
           </View>
           <View style={styles.arrowzone}>
             <Feather name="arrow-right" size={48} color={Colours['main'].altdark} />
@@ -102,7 +133,7 @@ export default function TaskWidget({
 
 const styles = StyleSheet.create({
   container: {
-    width: 800,
+    minWidth: 800,
     minHeight: 125,
     flexDirection: 'row',
   },
@@ -146,18 +177,18 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
-    fontSize: 25,
+    // fontSize: 25,
     // color: Colours[settings.theme].text,
-    fontWeight: 'bold',
-    letterSpacing: 1,
+    // fontWeight: 'bold',
+    // letterSpacing: 1,
     marginBottom: 5,
   },
   details: {
-    fontSize: 18,
+    // fontSize: 18,
     // color: Colours[settings.theme].altdark,
   },
   date: {
-    fontSize: 22,
+    // fontSize: 22,
     // color: Colours[settings.theme].altdark,
   },
 });

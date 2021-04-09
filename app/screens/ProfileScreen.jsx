@@ -152,7 +152,15 @@ export default function ProfileScreen() {
 
       <View style={styles.bottom}>
         <View style={styles.left}>
-          <Text style={[styles.description, { color: Colours['main'].altdark }]}>{description}</Text>
+          <Text style={[styles.description, {
+            color: Colours['main'].altdark,
+            fontSize: 32 * settings.fontSize,
+            fontFamily: settings.fontFamily,
+            letterSpacing: settings.fontSpacing,
+          }]}
+          >
+            {description}
+          </Text>
         </View>
         <View style={styles.buttons}>
           <View style={styles.button}>
@@ -193,7 +201,13 @@ export default function ProfileScreen() {
               defaultValue={description}
               onSubmitEditing={(value) => setDescription(value)}
               onChangeText={(value) => setTempDescription(value)}
-              style={[styles.textbox, { backgroundColor: Colours['main'].mid, color: Colours['main'].text }]}
+              style={[styles.textbox, {
+                backgroundColor: Colours['main'].mid,
+                color: Colours['main'].text,
+                fontSize: 28 * settings.fontSize,
+                fontFamily: settings.fontFamily,
+                letterSpacing: settings.fontSpacing,
+              }]}
             />
             <View style={styles.savebutton}>
               <IconButton icon="x" text="Cancel" buttonAction={() => { setDescriptionModal(false); setTempDescription(description); }} />
@@ -228,7 +242,7 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     marginBottom: Spacing.margin.mid,
-    borderRadius: 90,
+    borderRadius: Borders.radius.mid,
     // backgroundColor: Colours['main'].mid,
     justifyContent: 'center',
     alignItems: 'center',
@@ -253,11 +267,11 @@ const styles = StyleSheet.create({
     flex: 7,
   },
   buttons: {
-    flex: 2,
+    // flex: 2,
     justifyContent: 'space-around',
   },
   description: {
-    fontSize: 32,
+    // fontSize: 32,
     padding: Spacing.padding.mid,
     // color: Colours['main'].altdark,
     lineHeight: 50,
@@ -279,7 +293,7 @@ const styles = StyleSheet.create({
   },
   textbox: {
     flex: 7,
-    fontSize: 28,
+    // fontSize: 28,
     // backgroundColor: Colours['main'].mid,
     borderRadius: Borders.radius.mid,
     padding: Spacing.padding.large,
