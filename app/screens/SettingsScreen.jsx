@@ -12,7 +12,7 @@ import { Colours, Spacing, Borders } from '../../styles/Index';
 export default function SettingsScreen() {
   const [fontFamily, setFontFamily] = useState('Helvetica');
   const [fontSize, setFontSize] = useState('1');
-  const [fontSpacing, setFontSpacing] = useState('1');
+  const [fontSpacing, setFontSpacing] = useState('0');
   const [theme, setTheme] = useState('main');
   const [pin, setPin] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);

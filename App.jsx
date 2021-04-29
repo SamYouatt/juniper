@@ -1,16 +1,11 @@
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet, Text, View, Image, Settings,
-} from 'react-native';
 import 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeScreen from './app/screens/HomeScreen';
-import SettingsScreen from './app/screens/SettingsScreen';
 import ProfileScreen from './app/screens/ProfileScreen';
 import SummaryScreen from './app/screens/SummaryScreen';
 import TaskManager from './app/screens/TaskManager';
@@ -31,7 +26,7 @@ export default function App() {
     'Garamond': require('./assets/fonts/Garamond/Garamond.ttf'),
     'Garamond-bold': require('./assets/fonts/Garamond/EBGaramond-Bold.ttf'),
     'OpenDyslexic': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf'),
-    'OpenDyslexic-bold': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Bold.otf'),
+    'OpenDyslexic-bold': require('./assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf'),
   });
   const [settings, setSettings] = useState({
     theme: 'main',
@@ -45,12 +40,14 @@ export default function App() {
   }, []);
 
   const loadSettings = async () => {
-    const storedSettings = {
-      fontFamily: 'Helvetica',
-      fontSize: 1,
-      fontSpacing: 0,
-      theme: 'main',
-    };
+    // const storedSettings = {
+    //   fontFamily: 'Helvetica',
+    //   fontSize: 1,
+    //   fontSpacing: 0,
+    //   theme: 'main',
+    // };
+
+    const storedSettings = { ...settings };
 
     const storedFont = await AsyncStorage.getItem('fontFamily');
     if (storedFont) {
@@ -138,12 +135,3 @@ export default function App() {
     </SettingsContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
